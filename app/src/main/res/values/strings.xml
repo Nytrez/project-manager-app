@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">project manager</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="user_token">Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJzdHJpbmciLCJpc3MiOiJcIm55dHJlelwiIiwiaWF0IjoxNzA1ODgwMDQxLCJleHAiOjE3MDU5MTYwNDF9.3PA7xtigXygicGF3544ob-CVaMZTQb3oTpXZv2P5_Ch3mMBDaCIvhoo0RPa4Bvea</string>
+</resources>

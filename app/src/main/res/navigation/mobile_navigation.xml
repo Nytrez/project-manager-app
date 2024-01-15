@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_dashboard">
+
+
+    <fragment
+        android:id="@+id/navigation_dashboard"
+        android:name="com.example.projectmanager.ui.dashboard.projects.DashboardFragment"
+        android:label="@string/title_dashboard"
+        tools:layout="@layout/fragment_dashboard" >
+
+        <action
+            android:id="@+id/action_navigation_dashboard_to_projectManageFragment"
+            app:destination="@id/navigation_fragment_manage_projects" />
+
+        <action
+            android:id="@+id/action_navigation_dashboard_to_projectTasksFragment"
+            app:destination="@id/navigation_project_tasks" />
+
+        <action
+            android:id="@+id/action_navigation_dashboard_to_createProjectFragment"
+            app:destination="@id/navigation_fragment_create_project" />
+
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/navigation_project_tasks"
+        android:name="com.example.projectmanager.ui.dashboard.tasks.kanban.ProjectTasksFragment"
+        android:label="Task Board"
+        tools:layout="@layout/fragment_project_tasks">
+        <action
+            android:id="@+id/action_navigation_projectTasksFragment_to_projectToDoTasksFragment"
+            app:destination="@id/navigation_fragment_tasks_to_do" />
+        <action
+            android:id="@+id/action_navigation_projectTasksFragment_to_projectInProgressTasksFragment"
+            app:destination="@id/navigation_fragment_tasks_in_progress" />
+        <action
+            android:id="@+id/action_navigation_projectTasksFragment_to_projectDoneTasksFragment"
+            app:destination="@id/navigation_fragment_tasks_done" />
+
+        <action
+            android:id="@+id/action_navigation_to_taskDetailsFragment"
+            app:destination="@id/navigation_fragment_tasks_details" />
+        <argument
+            android:name="projectId"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_fragment_tasks_to_do"
+        android:name="com.example.projectmanager.ui.dashboard.tasks.state.TasksToDoFragment"
+        android:label="Tasks to do"
+        tools:layout="@layout/fragment_tasks_to_do">
+
+        <argument
+            android:name="projectId"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_fragment_tasks_in_progress"
+        android:name="com.example.projectmanager.ui.dashboard.tasks.state.TasksInProgressFragment"
+        android:label="Tasks in progress"
+        tools:layout="@layout/fragment_tasks_in_progress">
+
+        <argument
+            android:name="projectId"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_fragment_tasks_done"
+        android:name="com.example.projectmanager.ui.dashboard.tasks.state.TasksDoneFragment"
+        android:label="Tasks done"
+        tools:layout="@layout/fragment_tasks_done">
+        <argument
+            android:name="projectId"
+            app:argType="integer" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_fragment_tasks_details"
+        android:name="com.example.projectmanager.ui.dashboard.tasks.detail.TaskDetailsFragment"
+        android:label="Task details"
+        tools:layout="@layout/fragment_task_details">
+        <argument
+            android:name="taskId"
+            app:argType="integer" />
+        <argument
+            android:name="projectId"
+            app:argType="integer" />
+
+        <action
+            android:id="@+id/action_navigation_to_editTaskFragment"
+            app:destination="@id/navigation_to_editTaskFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/navigation_to_editTaskFragment"
+        android:name="com.example.projectmanager.ui.dashboard.tasks.detail.edit.TaskEditFragment"
+        android:label="Create project"
+        tools:layout="@layout/fragment_task_details_edit">
+
+        <argument
+            android:name="taskId"
+            app:argType="integer" />
+
+        <argument
+            android:name="projectId"
+            app:argType="integer" />
+
+<!--        <action android:id="@+id/action_navigation_to_editTaskSelectUserFragment"-->
+<!--            app:destination="@id/navigation_to_editTaskSelectUserFragment" />-->
+
+    </fragment>
+
+<!--    <fragment-->
+<!--        android:id="@+id/navigation_to_editTaskSelectUserFragment"-->
+<!--        android:name="com.example.projectmanager.ui.dashboard.tasks.detail.edit.TaskEditSelectUserFragment"-->
+<!--        android:label="Select user"-->
+<!--        tools:layout="@layout/fragment_task_select_person">-->
+
+<!--        <argument-->
+<!--            android:name="taskId"-->
+<!--            app:argType="integer" />-->
+
+<!--        <argument-->
+<!--            android:name="projectId"-->
+<!--            app:argType="integer" />-->
+<!--    </fragment>-->
+
+    <fragment
+        android:id="@+id/navigation_fragment_create_project"
+        android:name="com.example.projectmanager.ui.dashboard.projects.create.CreateProjectFragment"
+        android:label="Create project"
+        tools:layout="@layout/fragment_add_project">
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_fragment_manage_projects"
+        android:name="com.example.projectmanager.ui.dashboard.projects.manage.ManageProjectsFragment"
+        android:label="Your Projects"
+        tools:layout="@layout/fragment_manage_projects">
+
+        <action
+            android:id="@+id/action_navigation_dashboard_to_projectManageProjectFragment"
+            app:destination="@id/navigation_fragment_manage_projects_detail" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_fragment_manage_projects_detail"
+        android:name="com.example.projectmanager.ui.dashboard.projects.manage.details.ProjectManageFragment"
+        android:label="Change Project Details"
+        tools:layout="@layout/fragment_manage_projects_item">
+
+        <argument
+            android:name="projectId"
+            app:argType="integer" />
+
+        <action
+            android:id="@+id/action_navigation_to_manageUsersFragment"
+            app:destination="@id/navigation_fragment_manage_projects_users" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_fragment_manage_projects_users"
+        android:name="com.example.projectmanager.ui.dashboard.projects.manage.users.UserManageFragment"
+        android:label="Manage Users"
+        tools:layout="@layout/fragment_manage_users">
+
+        <argument
+            android:name="projectId"
+            app:argType="integer" />
+
+    </fragment>
+
+</navigation>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/dialogAddUserEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="20dp"
+        android:alpha="0.7"
+        android:background="@drawable/text_input_border"
+        android:hint="User email"
+        android:inputType="textEmailAddress"
+        android:padding="16dp"
+        android:textSize="20dp"
+        />
+
+    <EditText
+        android:id="@+id/dialogAddUserRole"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="20dp"
+        android:alpha="0.7"
+        android:background="@drawable/text_input_border"
+        android:hint="Role"
+        android:padding="16dp"
+        android:textSize="20dp"
+        />
+
+    <EditText
+        android:id="@+id/dialogAddUserPermissions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="20dp"
+        android:alpha="0.7"
+        android:background="@drawable/text_input_border"
+        android:hint="Permissions"
+        android:inputType="number"
+
+        android:padding="16dp"
+        android:textSize="20dp"
+        />
+</LinearLayout>
