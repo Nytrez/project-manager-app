@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="TextInputStyleMargin">
+        <item name="android:layout_marginStart">@dimen/text_input_margin</item>
+        <item name="android:layout_marginBottom">@dimen/text_input_margin</item>
+        <item name="android:layout_marginEnd">@dimen/text_input_margin</item>
+    </style>
+
+</resources>

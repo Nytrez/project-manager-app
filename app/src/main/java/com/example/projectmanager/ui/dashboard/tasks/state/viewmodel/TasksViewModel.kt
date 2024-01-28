@@ -15,23 +15,30 @@ import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
 
-class TasksViewModel(private val projectId : Int, private val taskStatus : Int) : ViewModel() {
+class TasksViewModel : ViewModel() {
+
+    val LOG_TAG = "TasksViewModel"
 
     val allProjectTasks: MutableLiveData<Resource<TasksResponse>> = MutableLiveData()
 
-    init {
-        getAllProjectTasks()
-    }
-
-    private fun getAllProjectTasks() {
+     fun getAllProjectTasks(projectId : Int, taskStatus : Int) {
         viewModelScope.launch {
             try {
                 allProjectTasks.postValue(Resource.Loading())
-                //Log.d("TasksViewModel", "getAllProjectTasks: $userToken")
+                Log.d(LOG_TAG, "getAllProjectTasks: Requesting tasks with status $taskStatus")
                 val response = RetrofitBuilder.api.getProjectAllTasks(SessionManager.fetchAuthToken()!!, projectId)
-                handleApiResponse(response, allProjectTasks)
+                handleApiResponse(
+                    response = response,
+                    liveData = allProjectTasks,
+                    transform = { tasksResponse ->
+                        // Cast to TasksResponse and filter, then create a new TasksResponse
+                        TasksResponse().apply {
+                            addAll((tasksResponse).filter { it.taskStatus == taskStatus })
+                        }
+                    }
+                )
             } catch (t: Throwable) {
-                Log.d("TasksViewModel", "getAllProjectTasks: $t")
+                Log.d(LOG_TAG, "getAllProjectTasks error for task status $taskStatus: $t")
                 when (t) {
                     is IOException -> allProjectTasks.postValue(Resource.Error("Network Failure"))
                     else -> allProjectTasks.postValue(Resource.Error(t.message ?: "Unknown error"))

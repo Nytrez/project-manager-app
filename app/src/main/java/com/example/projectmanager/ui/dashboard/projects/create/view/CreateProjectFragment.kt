@@ -85,10 +85,10 @@ class CreateProjectFragment : Fragment() {
     }
 
     private fun tryCreateProject() {
-        val projectName = binding.addProjectName.text.trim().toString()
-        val projectDescription = binding.addProjectDescription.text.trim().toString()
-        val projectEstimatedEndDateString = binding.addProjectEndDate.text.trim().toString()
-        val projectStartDateString = binding.addProjectStartDate.text.trim().toString()
+        val projectName = binding.addProjectName.text?.trim().toString()
+        val projectDescription = binding.addProjectDescription.text?.trim().toString()
+        val projectEstimatedEndDateString = binding.addProjectEndDate.text?.trim().toString()
+        val projectStartDateString = binding.addProjectStartDate.text?.trim().toString()
         //val projectStartDate = binding.addProjectStartDate.text.trim().toString()
 
 //        val myFormat = "yyyy-MM-dd" // format daty, który używasz // TODO Daty?

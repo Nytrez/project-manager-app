@@ -45,8 +45,8 @@ class LoginFragment : Fragment() {
         }
     }
     private fun tryLogin(){
-        val email = _binding.activityLoginEnterEmail.text.trim().toString()
-        val password = _binding.activityLoginEnterPassword.text.trim().toString()
+        val email = _binding.activityLoginEnterEmail.text?.trim().toString()
+        val password = _binding.activityLoginEnterPassword.text?.trim().toString()
         if (email.isNotEmpty() && password.isNotEmpty()) {
             loginActivityViewModel.login(email, password)
         } else {

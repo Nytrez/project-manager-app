@@ -16,7 +16,7 @@ import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.databinding.FragmentTasksInProgressBinding
 import com.example.projectmanager.ui.dashboard.tasks.state.viewmodel.TasksAdapter
 import com.example.projectmanager.ui.dashboard.tasks.state.viewmodel.TasksViewModel
-import com.example.projectmanager.ui.dashboard.tasks.state.viewmodel.TasksViewModelFactory
+
 
 class TasksInProgressFragment : Fragment() {
 
@@ -45,10 +45,12 @@ class TasksInProgressFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val factory = TasksViewModelFactory(args.projectId, 1)
-        tasksViewModel = ViewModelProvider(this, factory)[TasksViewModel::class.java]
+
+        tasksViewModel = ViewModelProvider(this)[TasksViewModel::class.java]
 
         setUpRecyclerView()
+        tasksViewModel.getAllProjectTasks(args.projectId, 1)
+
 
         tasksAdapter.setOnItemClickListener {
             Log.d(LOG_TAG, "ProjectId: ${it.taskId}")

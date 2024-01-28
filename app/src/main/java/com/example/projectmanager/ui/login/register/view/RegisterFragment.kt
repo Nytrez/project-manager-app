@@ -43,10 +43,10 @@ class RegisterFragment : Fragment() {
         }
     }
     private fun tryRegister(){
-        val email = _binding.activityLoginRegisterEmail.text.trim().toString()
-        val password = _binding.activityLoginRegisterPassword.text.trim().toString()
-        val firstName = _binding.activityLoginRegisterName.text.trim().toString()
-        val lastName = _binding.activityLoginRegisterSurname.text.trim().toString()
+        val email = _binding.activityLoginRegisterEmail.text?.trim().toString()
+        val password = _binding.activityLoginRegisterPassword.text?.trim().toString()
+        val firstName = _binding.activityLoginRegisterName.text?.trim().toString()
+        val lastName = _binding.activityLoginRegisterSurname.text?.trim().toString()
         if (email.isNotEmpty() && password.isNotEmpty()) {
             loginActivityViewModel.register(email, password, firstName, lastName)
         } else {

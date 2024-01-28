@@ -14,7 +14,6 @@
         app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
-            android:id="@+id/addProjectHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Create Project"
@@ -24,58 +23,67 @@
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"/>
 
-        <EditText
-            android:id="@+id/addProjectName"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/TextInputStyleMargin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:alpha="0.7"
-            android:background="@drawable/text_input_border"
             android:hint="Project name"
-            android:padding="16dp"
-            android:textSize="20dp"
-            />
+            app:endIconMode="clear_text">
 
-        <EditText
-            android:id="@+id/addProjectDescription"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/addProjectName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/TextInputStyleMargin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:alpha="0.7"
-            android:background="@drawable/text_input_border"
             android:hint="Project description"
-            android:padding="16dp"
-            android:textSize="20dp"/>
+            app:endIconMode="clear_text">
 
-        <TextView
-            android:id="@+id/addProjectStartDate"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/addProjectDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/TextInputStyleMargin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:alpha="0.7"
-            android:background="@drawable/text_input_border"
             android:hint="Project start date"
-            android:padding="16dp"
-            android:textSize="20dp"/>
+            app:endIconMode="clear_text">
 
-        <TextView
-            android:id="@+id/addProjectEndDate"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/addProjectStartDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/TextInputStyleMargin"
             android:layout_width="match_parent"
+
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:alpha="0.7"
-            android:background="@drawable/text_input_border"
             android:hint="Estimated project end date"
-            android:padding="16dp"
-            android:textSize="20dp"/>
+            app:startIconDrawable="@drawable/calendar_icon"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+
+                android:id="@+id/addProjectEndDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
 
         <Button
             android:id="@+id/btnAddProject"

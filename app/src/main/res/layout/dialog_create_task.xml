@@ -2,63 +2,69 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="16dp">
 
-    <EditText
-        android:id="@+id/dialogCreateTaskHeader"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:alpha="0.7"
-        android:background="@drawable/text_input_border"
-        android:hint="Task header"
-        android:padding="16dp"
-        android:textSize="20dp"
-        />
 
-    <EditText
-        android:id="@+id/dialogCreateTaskDescriptionShort"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextInputStyleMargin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:alpha="0.7"
-        android:background="@drawable/text_input_border"
+        android:hint="User email"
+        app:endIconMode="clear_text">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dialogCreateTaskHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextInputStyleMargin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:hint="Task description short"
-        android:padding="16dp"
-        android:textSize="20dp"
-        />
+        app:endIconMode="clear_text">
 
-    <EditText
-        android:id="@+id/dialogCreateTaskDescription"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dialogCreateTaskDescriptionShort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextInputStyleMargin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:alpha="0.7"
-        android:background="@drawable/text_input_border"
         android:hint="Task description"
-        android:padding="16dp"
-        android:textSize="20dp"
-        />
+        app:endIconMode="clear_text">
 
-    <EditText
-        android:id="@+id/dialogCreateTaskPriority"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dialogCreateTaskDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/TextInputStyleMargin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:alpha="0.7"
-        android:background="@drawable/text_input_border"
         android:hint="Task priority"
-        android:padding="16dp"
-        android:textSize="20dp"/>
+        app:endIconMode="clear_text">
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/dialogCreateTaskPriority"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
 
+    </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>
