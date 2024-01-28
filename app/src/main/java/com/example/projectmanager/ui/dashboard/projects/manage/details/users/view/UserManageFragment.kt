@@ -1,4 +1,4 @@
-package com.example.projectmanager.ui.dashboard.projects.manage.users
+package com.example.projectmanager.ui.dashboard.projects.manage.details.users.view
 
 import android.graphics.Color
 import android.os.Bundle
@@ -18,6 +18,7 @@ import com.example.projectmanager.R
 import com.example.projectmanager.data.model.projects.manage.user.UserDetailsProjectResponseItem
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.databinding.FragmentManageUsersBinding
+import com.example.projectmanager.ui.dashboard.projects.manage.details.users.viewmodel.UserManageViewModel
 import com.google.android.material.snackbar.Snackbar
 
 class UserManageFragment : Fragment() {

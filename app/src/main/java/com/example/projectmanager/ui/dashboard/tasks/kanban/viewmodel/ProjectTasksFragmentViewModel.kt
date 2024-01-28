@@ -1,4 +1,4 @@
-package com.example.projectmanager.ui.dashboard.tasks.kanban
+package com.example.projectmanager.ui.dashboard.tasks.kanban.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData

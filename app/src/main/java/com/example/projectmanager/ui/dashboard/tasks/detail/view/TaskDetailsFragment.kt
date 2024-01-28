@@ -1,4 +1,4 @@
-package com.example.projectmanager.ui.dashboard.tasks.detail
+package com.example.projectmanager.ui.dashboard.tasks.detail.view
 
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.projectmanager.R
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.databinding.FragmentTaskDetailsBinding
+import com.example.projectmanager.ui.dashboard.tasks.detail.viewmodel.TaskDetailsViewModel
 
 class TaskDetailsFragment : Fragment() {
 

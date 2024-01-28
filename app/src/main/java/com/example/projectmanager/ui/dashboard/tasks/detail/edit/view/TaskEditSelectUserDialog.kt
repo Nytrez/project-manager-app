@@ -1,4 +1,4 @@
-package com.example.projectmanager.ui.dashboard.tasks.detail.edit
+package com.example.projectmanager.ui.dashboard.tasks.detail.edit.view
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -14,7 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectmanager.R
 import com.example.projectmanager.data.util.Resource
-import com.example.projectmanager.ui.dashboard.projects.manage.users.UserManageAdapter
+import com.example.projectmanager.ui.dashboard.projects.manage.details.users.view.UserManageAdapter
+import com.example.projectmanager.ui.dashboard.tasks.detail.edit.viewmodel.TaskEditSelectUserViewModel
 
 class UserSelectDialogFragment : DialogFragment() {
 

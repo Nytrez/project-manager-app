@@ -1,4 +1,4 @@
-package com.example.projectmanager.ui.dashboard.projects.create
+package com.example.projectmanager.ui.dashboard.projects.create.view
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.databinding.FragmentAddProjectBinding
+import com.example.projectmanager.ui.dashboard.projects.create.viewmodel.CreateProjectViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale

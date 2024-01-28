@@ -1,4 +1,4 @@
-package com.example.projectmanager.ui.dashboard.projects
+package com.example.projectmanager.ui.dashboard.projects.view
 
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.projectmanager.R
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.databinding.FragmentProjectsBinding
+import com.example.projectmanager.ui.dashboard.projects.viewmodel.DashboardViewModel
 
 class DashboardFragment : Fragment() {
 

@@ -1,4 +1,4 @@
-package com.example.projectmanager.ui.dashboard.projects
+package com.example.projectmanager.ui.dashboard.projects.view
 
 import android.view.LayoutInflater
 import android.view.View

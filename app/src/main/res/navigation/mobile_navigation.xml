@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.projectmanager.ui.dashboard.projects.DashboardFragment"
+        android:name="com.example.projectmanager.ui.dashboard.projects.view.DashboardFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_dashboard" >
 
@@ -29,7 +29,7 @@
 
     <fragment
         android:id="@+id/navigation_project_tasks"
-        android:name="com.example.projectmanager.ui.dashboard.tasks.kanban.ProjectTasksFragment"
+        android:name="com.example.projectmanager.ui.dashboard.tasks.kanban.view.ProjectTasksFragment"
         android:label="Task Board"
         tools:layout="@layout/fragment_project_tasks">
         <action
@@ -52,7 +52,7 @@
 
     <fragment
         android:id="@+id/navigation_fragment_tasks_to_do"
-        android:name="com.example.projectmanager.ui.dashboard.tasks.state.TasksToDoFragment"
+        android:name="com.example.projectmanager.ui.dashboard.tasks.state.view.TasksToDoFragment"
         android:label="Tasks to do"
         tools:layout="@layout/fragment_tasks_to_do">
 
@@ -63,7 +63,7 @@
 
     <fragment
         android:id="@+id/navigation_fragment_tasks_in_progress"
-        android:name="com.example.projectmanager.ui.dashboard.tasks.state.TasksInProgressFragment"
+        android:name="com.example.projectmanager.ui.dashboard.tasks.state.view.TasksInProgressFragment"
         android:label="Tasks in progress"
         tools:layout="@layout/fragment_tasks_in_progress">
 
@@ -74,7 +74,7 @@
 
     <fragment
         android:id="@+id/navigation_fragment_tasks_done"
-        android:name="com.example.projectmanager.ui.dashboard.tasks.state.TasksDoneFragment"
+        android:name="com.example.projectmanager.ui.dashboard.tasks.state.view.TasksDoneFragment"
         android:label="Tasks done"
         tools:layout="@layout/fragment_tasks_done">
         <argument
@@ -84,7 +84,7 @@
 
     <fragment
         android:id="@+id/navigation_fragment_tasks_details"
-        android:name="com.example.projectmanager.ui.dashboard.tasks.detail.TaskDetailsFragment"
+        android:name="com.example.projectmanager.ui.dashboard.tasks.detail.view.TaskDetailsFragment"
         android:label="Task details"
         tools:layout="@layout/fragment_task_details">
         <argument
@@ -102,7 +102,7 @@
 
     <fragment
         android:id="@+id/navigation_to_editTaskFragment"
-        android:name="com.example.projectmanager.ui.dashboard.tasks.detail.edit.TaskEditFragment"
+        android:name="com.example.projectmanager.ui.dashboard.tasks.detail.edit.view.TaskEditFragment"
         android:label="Create project"
         tools:layout="@layout/fragment_task_details_edit">
 
@@ -136,7 +136,7 @@
 
     <fragment
         android:id="@+id/navigation_fragment_create_project"
-        android:name="com.example.projectmanager.ui.dashboard.projects.create.CreateProjectFragment"
+        android:name="com.example.projectmanager.ui.dashboard.projects.create.view.CreateProjectFragment"
         android:label="Create project"
         tools:layout="@layout/fragment_add_project">
 
@@ -144,7 +144,7 @@
 
     <fragment
         android:id="@+id/navigation_fragment_manage_projects"
-        android:name="com.example.projectmanager.ui.dashboard.projects.manage.ManageProjectsFragment"
+        android:name="com.example.projectmanager.ui.dashboard.projects.manage.view.ManageProjectsFragment"
         android:label="Your Projects"
         tools:layout="@layout/fragment_manage_projects">
 
@@ -156,7 +156,7 @@
 
     <fragment
         android:id="@+id/navigation_fragment_manage_projects_detail"
-        android:name="com.example.projectmanager.ui.dashboard.projects.manage.details.ProjectManageFragment"
+        android:name="com.example.projectmanager.ui.dashboard.projects.manage.details.view.ProjectManageFragment"
         android:label="Change Project Details"
         tools:layout="@layout/fragment_manage_projects_item">
 
@@ -172,7 +172,7 @@
 
     <fragment
         android:id="@+id/navigation_fragment_manage_projects_users"
-        android:name="com.example.projectmanager.ui.dashboard.projects.manage.users.UserManageFragment"
+        android:name="com.example.projectmanager.ui.dashboard.projects.manage.details.users.view.UserManageFragment"
         android:label="Manage Users"
         tools:layout="@layout/fragment_manage_users">
 

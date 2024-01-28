@@ -5,7 +5,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_marginTop="20dp"
         android:id="@+id/taskDetailsEditRvUserSelect"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

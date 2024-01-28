@@ -1,21 +1,16 @@
-package com.example.projectmanager.ui.dashboard.tasks.detail.edit
+package com.example.projectmanager.ui.dashboard.tasks.detail.edit.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.projectmanager.data.api.RetrofitBuilder
-import com.example.projectmanager.data.model.projects.manage.user.UserDetailsProjectResponse
-import com.example.projectmanager.data.model.projects.manage.user.UserProjectAddRequest
-import com.example.projectmanager.data.model.projects.manage.user.UserProjectRemoveRequest
 import com.example.projectmanager.data.model.tasks.TasksResponseItem
-import com.example.projectmanager.data.model.tasks.manage.TaskDetailsRequest
 import com.example.projectmanager.data.model.tasks.manage.TaskRemoveRequest
 import com.example.projectmanager.data.model.tasks.manage.TaskUpdateRequest
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.data.util.ResponseWrapper
 import com.example.projectmanager.ui.util.SessionManager
-import com.google.gson.Gson
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException

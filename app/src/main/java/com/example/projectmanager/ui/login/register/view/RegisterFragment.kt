@@ -1,4 +1,4 @@
-package com.example.projectmanager.ui.login.register
+package com.example.projectmanager.ui.login.register.view
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,7 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.projectmanager.R
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.databinding.ActivityLoginRegisterBinding
-import com.example.projectmanager.ui.login.login.LoginFragment
+import com.example.projectmanager.ui.login.view.LoginFragment
+import com.example.projectmanager.ui.login.register.viewmodel.RegisterFragmentViewModel
 
 class RegisterFragment : Fragment() {
 

@@ -1,4 +1,4 @@
-package com.example.projectmanager.ui.dashboard.tasks.detail
+package com.example.projectmanager.ui.dashboard.tasks.detail.view
 
 import android.util.Log
 import android.view.LayoutInflater

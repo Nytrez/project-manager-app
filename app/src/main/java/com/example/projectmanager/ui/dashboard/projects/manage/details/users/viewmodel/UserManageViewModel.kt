@@ -1,11 +1,10 @@
-package com.example.projectmanager.ui.dashboard.projects.manage.users
+package com.example.projectmanager.ui.dashboard.projects.manage.details.users.viewmodel
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.projectmanager.data.api.RetrofitBuilder
-import com.example.projectmanager.data.model.projects.manage.project.ProjectRequest
 import com.example.projectmanager.data.util.ResponseWrapper
 import com.example.projectmanager.data.model.projects.manage.user.UserDetailsChangeProjectRequest
 import com.example.projectmanager.data.model.projects.manage.user.UserDetailsProjectResponse

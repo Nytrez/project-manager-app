@@ -1,4 +1,4 @@
-package com.example.projectmanager.ui.dashboard.tasks.kanban
+package com.example.projectmanager.ui.dashboard.tasks.kanban.view
 
 import android.os.Bundle
 import android.util.Log
@@ -14,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.projectmanager.R
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.databinding.FragmentProjectTasksBinding
+import com.example.projectmanager.ui.dashboard.tasks.kanban.viewmodel.ProjectTasksFragmentViewModel
 //import com.example.projectmanager.ui.dashboard.ProjectTasksFragmentArgs
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.tabs.TabLayoutMediator

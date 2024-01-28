@@ -24,6 +24,8 @@ import com.example.projectmanager.data.model.tasks.manage.TaskRemoveRequest
 import com.example.projectmanager.data.model.tasks.manage.TaskUpdateRequest
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.Query
@@ -38,13 +40,13 @@ interface ProjectApi {
     suspend fun register(@Body request: RegisterRequest): Response<ResponseWrapper<Unit>>
 
     // Project related endpoints
-    @POST("api/v1/project/getAllProjects")
+    @GET("api/v1/project/getAllProjects")
     suspend fun getAllProjects(@Header("Authorization") token: String): Response<ResponseWrapper<ProjectsResponse>>
 
-    @POST("api/v1/project/getAllProjectsOwner")
+    @GET("api/v1/project/getAllProjectsOwner")
     suspend fun getAllProjectsOwner(@Header("Authorization") token: String): Response<ResponseWrapper<ProjectsResponse>>
 
-    @POST("api/v1/project/getProjectDetails")
+    @GET("api/v1/project/getProjectDetails")
     suspend fun getProjectDetails(@Header("Authorization") token: String, @Query("projectId") projectId: Int):
             Response<ResponseWrapper<ProjectResponseItem>>
 
@@ -59,8 +61,8 @@ interface ProjectApi {
     suspend fun deleteProject(@Header("Authorization") token: String, @Body project : ProjectDeleteRequest):
             Response<ResponseWrapper<Unit>>
 
-    @POST("api/v1/project/getProjectUsers")
-    suspend fun getProjectUsers(@Header("Authorization") token: String, @Body project : ProjectRequest):
+    @GET("api/v1/project/getProjectUsers")
+    suspend fun getProjectUsers(@Header("Authorization") token: String, @Query("projectId") projectId : Int):
             Response<ResponseWrapper<UserDetailsProjectResponse>>
 
     @POST("api/v1/project/updateProjectUserDetails")
@@ -76,12 +78,12 @@ interface ProjectApi {
             Response<ResponseWrapper<Unit>>
 
     // Task related endpoints
-    @POST("api/v1/tasks/getProjectAllTasks")
+    @GET("api/v1/tasks/getProjectAllTasks")
     suspend fun getProjectAllTasks(@Header("Authorization") token: String, @Query("projectId") projectId : Int):
             Response<ResponseWrapper<TasksResponse>>
 
-    @POST("api/v1/tasks/getTaskDetails")
-    suspend fun getTaskDetails(@Header("Authorization") token: String, @Body task : TaskDetailsRequest):
+    @GET("api/v1/tasks/getTaskDetails")
+    suspend fun getTaskDetails(@Header("Authorization") token: String, @Query("taskId") taskId : Int):
             Response<ResponseWrapper<TasksResponseItem>>
 
     @POST("api/v1/tasks/addTaskToProject")
@@ -97,7 +99,7 @@ interface ProjectApi {
             Response<ResponseWrapper<Unit>>
 
     // Comment related endpoints
-    @POST("api/v1/comments/getTaskAllComments")
+    @GET("api/v1/comments/getTaskAllComments")
     suspend fun getTaskAllComments(@Header("Authorization") token: String, @Query("taskId") taskId : Int):
             Response<ResponseWrapper<TaskCommentsResponse>>
 

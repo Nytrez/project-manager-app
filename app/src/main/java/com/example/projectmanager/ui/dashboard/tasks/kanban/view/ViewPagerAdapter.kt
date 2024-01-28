@@ -1,11 +1,11 @@
-package com.example.projectmanager.ui.dashboard.tasks.kanban
+package com.example.projectmanager.ui.dashboard.tasks.kanban.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.projectmanager.ui.dashboard.tasks.state.TasksDoneFragment
-import com.example.projectmanager.ui.dashboard.tasks.state.TasksInProgressFragment
-import com.example.projectmanager.ui.dashboard.tasks.state.TasksToDoFragment
+import com.example.projectmanager.ui.dashboard.tasks.state.view.TasksDoneFragment
+import com.example.projectmanager.ui.dashboard.tasks.state.view.TasksInProgressFragment
+import com.example.projectmanager.ui.dashboard.tasks.state.view.TasksToDoFragment
 
 class ViewPagerAdapter(fragment: Fragment, private val projectId: Int) : FragmentStateAdapter(fragment) {
 

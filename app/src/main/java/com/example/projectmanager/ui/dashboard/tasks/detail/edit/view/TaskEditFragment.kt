@@ -1,4 +1,4 @@
-package com.example.projectmanager.ui.dashboard.tasks.detail.edit
+package com.example.projectmanager.ui.dashboard.tasks.detail.edit.view
 
 import android.app.DatePickerDialog
 import android.os.Bundle
@@ -7,10 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.content.PackageManagerCompat.LOG_TAG
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -18,7 +16,8 @@ import com.example.projectmanager.R
 import com.example.projectmanager.data.model.projects.manage.user.UserDetailsProjectResponseItem
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.databinding.FragmentTaskDetailsEditBinding
-import com.example.projectmanager.ui.dashboard.projects.manage.details.ProjectManageFragmentArgs
+import com.example.projectmanager.ui.dashboard.tasks.detail.edit.viewmodel.TaskEditViewModel
+import com.example.projectmanager.ui.dashboard.tasks.detail.edit.viewmodel.SharedViewModel
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale

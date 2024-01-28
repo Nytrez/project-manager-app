@@ -1,9 +1,9 @@
-package com.example.projectmanager.ui.login
+package com.example.projectmanager.ui.login.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.projectmanager.R
-import com.example.projectmanager.ui.login.login.LoginFragment
+import com.example.projectmanager.ui.login.view.LoginFragment
 
 class LoginActivity : AppCompatActivity() {
 

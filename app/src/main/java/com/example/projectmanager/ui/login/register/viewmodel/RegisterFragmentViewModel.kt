@@ -1,4 +1,4 @@
-package com.example.projectmanager.ui.login.register
+package com.example.projectmanager.ui.login.register.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

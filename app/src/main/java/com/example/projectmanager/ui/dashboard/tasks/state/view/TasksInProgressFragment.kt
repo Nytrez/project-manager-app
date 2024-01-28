@@ -1,4 +1,4 @@
-package com.example.projectmanager.ui.dashboard.tasks.state
+package com.example.projectmanager.ui.dashboard.tasks.state.view
 
 import android.os.Bundle
 import android.util.Log

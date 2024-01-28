@@ -1,4 +1,4 @@
-package com.example.projectmanager.ui.dashboard.projects.manage
+package com.example.projectmanager.ui.dashboard.projects.manage.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

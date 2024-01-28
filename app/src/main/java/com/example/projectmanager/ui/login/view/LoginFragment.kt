@@ -1,4 +1,4 @@
-package com.example.projectmanager.ui.login.login
+package com.example.projectmanager.ui.login.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,7 +12,8 @@ import com.example.projectmanager.ProjectsActivity
 import com.example.projectmanager.R
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.databinding.ActivityLoginLoginBinding
-import com.example.projectmanager.ui.login.register.RegisterFragment
+import com.example.projectmanager.ui.login.viewmodel.LoginActivityViewModel
+import com.example.projectmanager.ui.login.register.view.RegisterFragment
 
 class LoginFragment : Fragment() {
 
