@@ -78,7 +78,7 @@ class TaskDetailsFragment : Fragment() {
     }
 
     private fun observeCommentPostResponse() {
-        taskDetailsViewModel.commentPost.observe(viewLifecycleOwner) { response ->
+        taskDetailsViewModel.commentPostResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
                     //hideProgressBar()
@@ -105,7 +105,7 @@ class TaskDetailsFragment : Fragment() {
 
 
     private fun observeProjects() {
-        taskDetailsViewModel.comments.observe(viewLifecycleOwner) { response ->
+        taskDetailsViewModel.commentsDetailsResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
                     //hideProgressBar()
@@ -128,7 +128,7 @@ class TaskDetailsFragment : Fragment() {
             }
         }
 
-        taskDetailsViewModel.taskDetails.observe(viewLifecycleOwner) { response ->
+        taskDetailsViewModel.taskDetailsResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
                     //hideProgressBar()

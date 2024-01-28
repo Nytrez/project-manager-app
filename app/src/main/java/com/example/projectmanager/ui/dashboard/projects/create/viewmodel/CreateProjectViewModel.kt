@@ -9,6 +9,7 @@ import com.example.projectmanager.data.util.ResponseWrapper
 import com.example.projectmanager.data.model.projects.manage.project.ProjectCreateRequest
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.ui.util.SessionManager
+import com.example.projectmanager.ui.util.handleApiResponse
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
@@ -19,7 +20,7 @@ class CreateProjectViewModel : ViewModel() {
 
     val projectCreateResponse : MutableLiveData<Resource<Unit>> = MutableLiveData()
 
-    public fun createProject(name : String, description : String, startDate : String, endDate : String) {
+    fun createProject(name : String, description : String, startDate : String, endDate : String) {
         viewModelScope.launch {
             try {
                 projectCreateResponse.postValue(Resource.Loading())
@@ -34,7 +35,7 @@ class CreateProjectViewModel : ViewModel() {
 
                 val response = RetrofitBuilder.api.createProject(SessionManager.fetchAuthToken()!!, projectRequest)
                 Log.d(LOG_TAG, "addTaskToProject: $response")
-                handleTasksResponse(response)
+                handleApiResponse(response, projectCreateResponse)
             } catch (t: Throwable) {
                 Log.d(LOG_TAG, "addTaskToProject: ${t.message}")
                 when (t) {
@@ -42,20 +43,6 @@ class CreateProjectViewModel : ViewModel() {
                     else -> projectCreateResponse.postValue(Resource.Error(t.message ?: "Unknown error"))
                 }
             }
-        }
-    }
-    private fun handleTasksResponse(response: Response<ResponseWrapper<Unit>>) {
-        if (response.isSuccessful) {
-            val responseBody = response.body()
-            if (responseBody != null) {
-
-                projectCreateResponse.postValue(Resource.Success(Unit))
-
-            } else {
-                projectCreateResponse.postValue(Resource.Error("Response body is null"))
-            }
-        } else {
-            projectCreateResponse.postValue(Resource.Error(response.message()))
         }
     }
 }

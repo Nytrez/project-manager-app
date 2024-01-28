@@ -11,6 +11,7 @@ import com.example.projectmanager.data.model.projects.ProjectResponseItem
 import com.example.projectmanager.data.model.projects.manage.project.ProjectDeleteRequest
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.ui.util.SessionManager
+import com.example.projectmanager.ui.util.handleApiResponse
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
@@ -29,7 +30,7 @@ class ProjectManageViewModel : ViewModel() {
                 projectDetails.postValue(Resource.Loading())
                 //Log.d("TasksViewModel", "getAllProjectTasks: $userToken")
                 val response = RetrofitBuilder.api.getProjectDetails(SessionManager.fetchAuthToken()!!, projectId)
-                handleProjectDetailsResponse(response)
+                handleApiResponse(response, projectDetails)
             } catch (t: Throwable) {
                 Log.d(LOG_TAG, "error whhile requesting tasks: $t")
                 when (t) {
@@ -59,7 +60,7 @@ class ProjectManageViewModel : ViewModel() {
                 )
 
                 val response = RetrofitBuilder.api.changeProjectDetails(SessionManager.fetchAuthToken()!!, projectRequest)
-                handleProjectChangeResponse(response)
+                handleApiResponse(response, projectChangeResponse)
             } catch (t: Throwable) {
                 Log.d(LOG_TAG, "error whhile requesting comments: $t")
                 when (t) {
@@ -70,50 +71,13 @@ class ProjectManageViewModel : ViewModel() {
         }
     }
 
-    private fun handleProjectChangeResponse(response: Response<ResponseWrapper<Unit>>) {
-        if (response.isSuccessful) {
-            val responseBody = response.body()
-            if (responseBody != null) {
-                if (responseBody.body != null) {
-                    projectChangeResponse.postValue(Resource.Success(responseBody.body))
-                } else {
-                    projectChangeResponse.postValue(Resource.Error(responseBody.reason))
-                }
-            } else {
-                projectChangeResponse.postValue(Resource.Error("Response body is null"))
-            }
-        } else {
-            projectChangeResponse.postValue(Resource.Error(response.message()))
-        }
-    }
-
-    private fun handleProjectDetailsResponse(response: Response<ResponseWrapper<ProjectResponseItem>>) {
-        if (response.isSuccessful) {
-            val responseBody = response.body()
-            if (responseBody != null) {
-                if (responseBody.body != null) {
-                    projectDetails.postValue(Resource.Success(responseBody.body))
-                } else {
-                    projectDetails.postValue(Resource.Error(responseBody.reason))
-                }
-            } else {
-                projectDetails.postValue(Resource.Error("Response body is null"))
-            }
-        } else {
-            projectDetails.postValue(Resource.Error(response.message()))
-        }
-    }
-
     fun removeProject(projectId: Int) {
         viewModelScope.launch {
             try {
                 projectDeletionResponse.postValue(Resource.Loading())
                 //Log.d("TasksViewModel", "getAllProjectTasks: $userToken")
-                val projectRequest = ProjectDeleteRequest(
-                    projectId = projectId
-                )
-                val response = RetrofitBuilder.api.deleteProject(SessionManager.fetchAuthToken()!!, projectRequest)
-                handleProjectDeleteResponse(response)
+                val response = RetrofitBuilder.api.deleteProject(SessionManager.fetchAuthToken()!!, projectId)
+                handleApiResponse(response, projectDeletionResponse)
             } catch (t: Throwable) {
                 Log.d(LOG_TAG, "error whhile requesting tasks: $t")
                 when (t) {
@@ -124,21 +88,5 @@ class ProjectManageViewModel : ViewModel() {
         }
     }
 
-    private fun handleProjectDeleteResponse(response: Response<ResponseWrapper<Unit>>) {
-        if (response.isSuccessful) {
-            val responseBody = response.body()
-            if (responseBody != null) {
-                if (responseBody.body != null) {
-                    projectDeletionResponse.postValue(Resource.Success(responseBody.body))
-                } else {
-                    projectDeletionResponse.postValue(Resource.Error(responseBody.reason))
-                }
-            } else {
-                projectDeletionResponse.postValue(Resource.Error("Response body is null"))
-            }
-        } else {
-            projectDeletionResponse.postValue(Resource.Error(response.message()))
-        }
-    }
 }
 

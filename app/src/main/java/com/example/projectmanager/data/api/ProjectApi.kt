@@ -58,7 +58,7 @@ interface ProjectApi {
     suspend fun createProject(@Header("Authorization") token: String, @Body request: ProjectCreateRequest): Response<ResponseWrapper<Unit>>
 
     @POST("api/v1/project/deleteProject")
-    suspend fun deleteProject(@Header("Authorization") token: String, @Body project : ProjectDeleteRequest):
+    suspend fun deleteProject(@Header("Authorization") token: String, @Query("projectId") projectId : Int):
             Response<ResponseWrapper<Unit>>
 
     @GET("api/v1/project/getProjectUsers")
@@ -73,8 +73,9 @@ interface ProjectApi {
     suspend fun addUserToProject(@Header("Authorization") token: String, @Body project : UserProjectAddRequest):
             Response<ResponseWrapper<Unit>>
 
-    @POST("api/v1/project/removeUserFromProject")
-    suspend fun removeUserFromProject(@Header("Authorization") token: String, @Body project : UserProjectRemoveRequest):
+    @DELETE("api/v1/project/removeUserFromProject")
+    suspend fun removeUserFromProject(@Header("Authorization") token: String, @Query("projectId") projectId: Int, @Query("userId") userId :
+    Int):
             Response<ResponseWrapper<Unit>>
 
     // Task related endpoints
@@ -94,8 +95,8 @@ interface ProjectApi {
     suspend fun updateTaskInProject(@Header("Authorization") token: String, @Body task : TaskUpdateRequest):
             Response<ResponseWrapper<Unit>>
 
-    @POST("api/v1/tasks/removeTaskFromProject")
-    suspend fun removeTaskFromProject(@Header("Authorization") token: String, @Body task : TaskRemoveRequest):
+    @DELETE("api/v1/tasks/removeTaskFromProject")
+    suspend fun removeTaskFromProject(@Header("Authorization") token: String, @Query("taskId") taskId : Int):
             Response<ResponseWrapper<Unit>>
 
     // Comment related endpoints
@@ -105,6 +106,10 @@ interface ProjectApi {
 
     @POST("api/v1/comments/addCommentToTask")
     suspend fun addCommentToTask(@Header("Authorization") token: String, @Body task : TaskCommentRequest):
+            Response<ResponseWrapper<Unit>>
+
+    @POST("api/v1/comments/delCommentInTask")
+    suspend fun delCommentInTask(@Header("Authorization") token: String, @Query("commentId") commentId : Int):
             Response<ResponseWrapper<Unit>>
 
 }

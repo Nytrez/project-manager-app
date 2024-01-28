@@ -11,6 +11,7 @@ import com.example.projectmanager.data.model.tasks.manage.TaskUpdateRequest
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.data.util.ResponseWrapper
 import com.example.projectmanager.ui.util.SessionManager
+import com.example.projectmanager.ui.util.handleApiResponse
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
@@ -30,7 +31,7 @@ class TaskEditViewModel : ViewModel() {
                 //Log.d("TasksViewModel", "getAllProjectTasks: $userToken")
                 //val task = TaskDetailsRequest(taskId)
                 val response = RetrofitBuilder.api.getTaskDetails(SessionManager.fetchAuthToken()!!, taskId)
-                handleTaskDetailsResponse(response)
+                handleApiResponse(response, taskDetailsResponse)
             } catch (t: Throwable) {
                 Log.d(LOG_TAG, "error whhile requesting tasks: $t")
                 when (t) {
@@ -40,15 +41,14 @@ class TaskEditViewModel : ViewModel() {
             }
         }
     }
-    fun deleteTask(taskId: Int) {
 
+    fun deleteTask(taskId: Int) {
         viewModelScope.launch {
             try {
                 taskDeleteResponse.postValue(Resource.Loading())
                 //Log.d("TasksViewModel", "getAllProjectTasks: $userToken")
-                val task = TaskRemoveRequest(taskId)
-                val response = RetrofitBuilder.api.removeTaskFromProject(SessionManager.fetchAuthToken()!!, task)
-                handleTaskDeleteResponse(response)
+                val response = RetrofitBuilder.api.removeTaskFromProject(SessionManager.fetchAuthToken()!!, taskId)
+                handleApiResponse(response, taskDeleteResponse)
             } catch (t: Throwable) {
                 Log.d(LOG_TAG, "error whhile requesting tasks: $t")
                 when (t) {
@@ -56,21 +56,6 @@ class TaskEditViewModel : ViewModel() {
                     else -> taskDeleteResponse.postValue(Resource.Error(t.message ?: "Unknown error"))
                 }
             }
-        }
-    }
-
-    private fun handleTaskDeleteResponse(response: Response<ResponseWrapper<Unit>>) {
-        if (response.isSuccessful) {
-            val responseBody = response.body()
-            if (responseBody != null) {
-
-                taskDeleteResponse.postValue(Resource.Success(Unit))
-
-            } else {
-                taskDeleteResponse.postValue(Resource.Error("Response body is null"))
-            }
-        } else {
-            taskDeleteResponse.postValue(response.body()?.let { Resource.Error(it.reason) })
         }
     }
 
@@ -97,7 +82,7 @@ class TaskEditViewModel : ViewModel() {
                 )
 
                 val response = RetrofitBuilder.api.updateTaskInProject(SessionManager.fetchAuthToken()!!, task)
-                handleTaskUpdateRequest(response)
+                handleApiResponse(response, taskEditResponse)
             } catch (t: Throwable) {
                 Log.d(LOG_TAG, "error whhile requesting comments: $t")
                 when (t) {
@@ -107,41 +92,4 @@ class TaskEditViewModel : ViewModel() {
             }
         }
     }
-
-
-    // RESPONSE HANDLERS
-
-    private fun handleTaskUpdateRequest(response: Response<ResponseWrapper<Unit>>) {
-        if (response.isSuccessful) {
-            val responseBody = response.body()
-            if (responseBody != null) {
-
-                taskEditResponse.postValue(Resource.Success(Unit))
-
-            } else {
-                taskEditResponse.postValue(Resource.Error("Response body is null"))
-            }
-        } else {
-            taskEditResponse.postValue(response.body()?.let { Resource.Error(it.reason) })
-        }
-    }
-
-    private fun handleTaskDetailsResponse(response: Response<ResponseWrapper<TasksResponseItem>>) {
-        if (response.isSuccessful) {
-            val responseBody = response.body()
-            if (responseBody != null) {
-                if (responseBody.body != null) {
-                    taskDetailsResponse.postValue(Resource.Success(responseBody.body))
-                } else {
-                    taskDetailsResponse.postValue(Resource.Error(responseBody.reason))
-                }
-            } else {
-                taskDetailsResponse.postValue(Resource.Error("Response body is null"))
-            }
-        } else {
-            taskDetailsResponse.postValue(Resource.Error(response.message()))
-        }
-    }
-
-
 }

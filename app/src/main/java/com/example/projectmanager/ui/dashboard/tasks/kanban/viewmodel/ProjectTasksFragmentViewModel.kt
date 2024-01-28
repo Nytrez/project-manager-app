@@ -9,6 +9,7 @@ import com.example.projectmanager.data.util.ResponseWrapper
 import com.example.projectmanager.data.model.tasks.manage.TasksCreateRequest
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.ui.util.SessionManager
+import com.example.projectmanager.ui.util.handleApiResponse
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
@@ -33,7 +34,7 @@ class ProjectTasksFragmentViewModel : ViewModel() {
 
                 val response = RetrofitBuilder.api.addTaskToProject(SessionManager.fetchAuthToken()!!, taskRequest)
                 Log.d("ProjectTasksFragmentViewModel", "addTaskToProject: $response")
-                handleTasksResponse(response)
+                handleApiResponse(response, taskCreateResponse)
             } catch (t: Throwable) {
                 Log.d("ProjectTasksFragmentViewModel", "addTaskToProject: ${t.message}")
                 when (t) {
@@ -41,20 +42,6 @@ class ProjectTasksFragmentViewModel : ViewModel() {
                     else -> taskCreateResponse.postValue(Resource.Error(t.message ?: "Unknown error"))
                 }
             }
-        }
-    }
-    private fun handleTasksResponse(response: Response<ResponseWrapper<Unit>>) {
-        if (response.isSuccessful) {
-            val responseBody = response.body()
-            if (responseBody != null) {
-
-                    taskCreateResponse.postValue(Resource.Success(Unit))
-
-            } else {
-                taskCreateResponse.postValue(Resource.Error("Response body is null"))
-            }
-        } else {
-            taskCreateResponse.postValue(Resource.Error(response.message()))
         }
     }
 }

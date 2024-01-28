@@ -8,6 +8,7 @@ import com.example.projectmanager.data.util.ResponseWrapper
 import com.example.projectmanager.data.model.projects.ProjectsResponse
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.ui.util.SessionManager
+import com.example.projectmanager.ui.util.handleApiResponse
 import kotlinx.coroutines.launch
 import retrofit2.Response
 import java.io.IOException
@@ -24,7 +25,7 @@ class ManageProjectsViewModel : ViewModel() {
             try {
                 allProjectsOwner.postValue(Resource.Loading())
                 val response = RetrofitBuilder.api.getAllProjectsOwner(SessionManager.fetchAuthToken()!!)
-                handleProjectsResponse(response)
+                handleApiResponse(response, allProjectsOwner)
             } catch (t:Throwable){
                 when(t) {
                     is IOException -> allProjectsOwner.postValue(Resource.Error("Network Failure"))
@@ -34,20 +35,4 @@ class ManageProjectsViewModel : ViewModel() {
         }
     }
 
-    private fun handleProjectsResponse(response: Response<ResponseWrapper<ProjectsResponse>>) {
-        if (response.isSuccessful) {
-            val responseBody = response.body()
-            if (responseBody != null) {
-                if(responseBody.body != null) {
-                    allProjectsOwner.postValue(Resource.Success(responseBody.body))
-                } else {
-                    allProjectsOwner.postValue(Resource.Error(responseBody.reason))
-                }
-            } else {
-                allProjectsOwner.postValue(Resource.Error("Response body is null"))
-            }
-        } else {
-            allProjectsOwner.postValue(Resource.Error(response.message()))
-        }
-    }
 }
