@@ -46,7 +46,7 @@ class ProjectTasksFragment : Fragment(){
 
         TabLayoutMediator(binding.tabs, binding.viewPager) { tab, position ->
             tab.text = when (position){
-                0 -> "ToDo"
+                0 -> "To Do"
                 1 -> "In Progress"
                 2 -> "Done"
                 else -> null

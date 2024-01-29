@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectmanager.R
 import com.example.projectmanager.data.model.projects.ProjectResponseItem
+import com.google.android.material.card.MaterialCardView
 
 class ProjectsAdapter: RecyclerView.Adapter<ProjectsAdapter.ProjectsViewHolder>(){
 
@@ -32,10 +33,13 @@ class ProjectsAdapter: RecyclerView.Adapter<ProjectsAdapter.ProjectsViewHolder>(
     override fun onBindViewHolder(holder: ProjectsViewHolder, position: Int) {
         val currProject = differ.currentList[position]
         holder.itemView.apply {
+            findViewById<MaterialCardView>(R.id.rvProjectItemCardView).setOnClickListener {
+                onItemClickListener?.let { it(currProject) }
+            }
+
             holder.itemView.findViewById<TextView>(R.id.rvProjectItemName).text = currProject.projectName
             holder.itemView.findViewById<TextView>(R.id.rvProjectItemDescription).text = currProject.projectDescription
             holder.itemView.findViewById<TextView>(R.id.rvProjectItemStartDate).text = currProject.projectStartDate.toString()
-
             holder.itemView.findViewById<TextView>(R.id.rvProjectItemEstimatedEndDate).text = currProject.projectEstimatedEndDate.toString()
 
 //            Glide.with(this)

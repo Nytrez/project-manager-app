@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectmanager.R
 import com.example.projectmanager.data.model.tasks.TasksResponseItem
+import com.google.android.material.card.MaterialCardView
 
 class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>(){
 
@@ -33,6 +34,11 @@ class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>(){
         val task = differ.currentList[position]
         //log.d("TasksAdapter", "onBindViewHolder: $task")
         holder.itemView.apply {
+
+            findViewById<MaterialCardView>(R.id.rvTaskItemCardView).setOnClickListener {
+                onItemClickListener?.let { it(task) }
+            }
+
             holder.itemView.findViewById<TextView>(R.id.taskDetailHeader).text = task.taskHeader
             holder.itemView.findViewById<TextView>(R.id.taskDetailDescriptionShort).text = task.taskDescriptionShort
             holder.itemView.findViewById<TextView>(R.id.taskDetailPriority).text = task.taskPriority.toString()
