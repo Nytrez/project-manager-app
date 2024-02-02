@@ -4,14 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectmanager.R
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.databinding.ActivityLoginRegisterBinding
-import com.example.projectmanager.ui.login.view.LoginFragment
 import com.example.projectmanager.ui.login.register.viewmodel.RegisterFragmentViewModel
+import com.example.projectmanager.ui.login.view.LoginActivity
+import com.example.projectmanager.ui.login.view.LoginFragment
+import com.google.android.material.snackbar.Snackbar
 
 class RegisterFragment : Fragment() {
 
@@ -28,7 +29,6 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         _binding.buttonBack.setOnClickListener {
-            // Replace the login fragment with the register fragment
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, LoginFragment())
                 .addToBackStack(null)
@@ -42,15 +42,20 @@ class RegisterFragment : Fragment() {
             observeLoginResponse()
         }
     }
-    private fun tryRegister(){
+
+    private fun tryRegister() {
         val email = _binding.activityLoginRegisterEmail.text?.trim().toString()
         val password = _binding.activityLoginRegisterPassword.text?.trim().toString()
         val firstName = _binding.activityLoginRegisterName.text?.trim().toString()
         val lastName = _binding.activityLoginRegisterSurname.text?.trim().toString()
         if (email.isNotEmpty() && password.isNotEmpty()) {
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Snackbar.make(requireView(), "Invalid email", Snackbar.LENGTH_LONG).show()
+                return
+            }
             loginActivityViewModel.register(email, password, firstName, lastName)
         } else {
-            Toast.makeText(requireContext(), "Please fill out all the fields.", Toast.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), "Please fill all the fields", Snackbar.LENGTH_LONG).show()
         }
     }
 
@@ -58,8 +63,9 @@ class RegisterFragment : Fragment() {
         loginActivityViewModel.registerResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
+                    (activity as? LoginActivity)?.hideLoadingIndicator()
                     response.data?.let {
-                        Toast.makeText(requireContext(), "Registering successful", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), "Registering successful", Snackbar.LENGTH_LONG).show()
                         parentFragmentManager.beginTransaction()
                             .replace(R.id.fragment_container, LoginFragment())
                             .addToBackStack(null)
@@ -68,13 +74,14 @@ class RegisterFragment : Fragment() {
                 }
 
                 is Resource.Error -> {
+                    (activity as? LoginActivity)?.hideLoadingIndicator()
                     response.message?.let { message ->
-                        Toast.makeText(requireContext(), "An error occurred: $message", Toast.LENGTH_LONG).show()
+                        Snackbar.make(requireView(), "An error occurred: $message", Snackbar.LENGTH_LONG).show()
                     }
                 }
 
                 is Resource.Loading -> {
-                    //showProgressBar()
+                    (activity as? LoginActivity)?.showLoadingIndicator()
                 }
             }
         }

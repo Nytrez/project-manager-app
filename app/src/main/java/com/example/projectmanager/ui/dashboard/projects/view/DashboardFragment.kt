@@ -5,23 +5,25 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.content.PackageManagerCompat.LOG_TAG
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.projectmanager.ProjectsActivity
 import com.example.projectmanager.R
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.databinding.FragmentProjectsBinding
 import com.example.projectmanager.ui.dashboard.projects.viewmodel.DashboardViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class DashboardFragment : Fragment() {
 
     private var _binding: FragmentProjectsBinding? = null
     private lateinit var projectsAdapter: ProjectsAdapter
     lateinit var dashboardViewModel: DashboardViewModel
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+
+    val LOG_TAG = "DashboardFragment"
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -49,7 +51,7 @@ class DashboardFragment : Fragment() {
         }
 
         projectsAdapter.setOnItemClickListener {
-            Log.d("DashboardFragment", "ProjectId: ${it.projectId}")
+            Log.d(LOG_TAG, "ProjectId: ${it.projectId}")
             val bundle = Bundle().apply {
                 putInt("projectId", it.projectId)
             }
@@ -62,7 +64,7 @@ class DashboardFragment : Fragment() {
     }
 
 
-   override fun onStart() {
+    override fun onStart() {
         super.onStart()
         dashboardViewModel.getAllProjects()
     }
@@ -71,29 +73,29 @@ class DashboardFragment : Fragment() {
         dashboardViewModel.allProjects.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.data?.let {
                         projectsAdapter.differ.submitList(it)
                     }
                 }
 
                 is Resource.Error -> {
-                    Log.d("DashboardFragment", "Error: ${response.message}")
-                    //hideProgressBar()
+                    Log.d(LOG_TAG, "Error: ${response.message}")
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, "An error occurred: $message", Snackbar.LENGTH_SHORT).show()
                     }
                 }
 
                 is Resource.Loading -> {
-                    //showProgressBar()
+                    (activity as? ProjectsActivity)?.showLoadingIndicator()
                 }
             }
         }
 
     }
 
-    private fun setUpRecyclerView(){
+    private fun setUpRecyclerView() {
         projectsAdapter = ProjectsAdapter()
         binding.rvProjects.apply {
             adapter = projectsAdapter

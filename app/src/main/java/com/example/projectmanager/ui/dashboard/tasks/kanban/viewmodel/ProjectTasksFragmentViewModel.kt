@@ -5,20 +5,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.projectmanager.data.api.RetrofitBuilder
-import com.example.projectmanager.data.util.ResponseWrapper
 import com.example.projectmanager.data.model.tasks.manage.TasksCreateRequest
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.ui.util.SessionManager
 import com.example.projectmanager.ui.util.handleApiResponse
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import java.io.IOException
 
 class ProjectTasksFragmentViewModel : ViewModel() {
 
-    val taskCreateResponse : MutableLiveData<Resource<Unit>> = MutableLiveData()
+    val taskCreateResponse: MutableLiveData<Resource<Unit>> = MutableLiveData()
 
-    public fun addTaskToProject(projectId: Int,  header: String, description: String, descriptionShort: String, priority: Int) {
+    val LOG_TAG = "ProjectTasksFragmentViewModel"
+
+    public fun addTaskToProject(projectId: Int, header: String, description: String, descriptionShort: String, priority: Int) {
         viewModelScope.launch {
             try {
                 taskCreateResponse.postValue(Resource.Loading())
@@ -30,13 +30,13 @@ class ProjectTasksFragmentViewModel : ViewModel() {
                     taskDescription = description,
                     priority = priority
                 )
-                Log.d("ProjectTasksFragmentViewModel", "addTaskToProject: $taskRequest")
+                Log.d(LOG_TAG, "addTaskToProject: $taskRequest")
 
                 val response = RetrofitBuilder.api.addTaskToProject(SessionManager.fetchAuthToken()!!, taskRequest)
-                Log.d("ProjectTasksFragmentViewModel", "addTaskToProject: $response")
+                Log.d(LOG_TAG, "addTaskToProject: $response")
                 handleApiResponse(response, taskCreateResponse)
             } catch (t: Throwable) {
-                Log.d("ProjectTasksFragmentViewModel", "addTaskToProject: ${t.message}")
+                Log.d(LOG_TAG, "addTaskToProject: ${t.message}")
                 when (t) {
                     is IOException -> taskCreateResponse.postValue(Resource.Error("Network Failure"))
                     else -> taskCreateResponse.postValue(Resource.Error(t.message ?: "Unknown error"))

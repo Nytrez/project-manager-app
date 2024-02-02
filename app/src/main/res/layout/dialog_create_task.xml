@@ -11,7 +11,7 @@
         style="@style/TextInputStyleMargin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="User email"
+        android:hint="Task name"
         app:endIconMode="clear_text">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -53,18 +53,23 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/TextInputStyleMargin"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Priority"
+        android:textSize="16dp"
+        android:layout_marginStart="20dp"
+        />
+
+    <com.google.android.material.slider.Slider
+        android:id="@+id/dialogCreateTaskPriority"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Task priority"
-        app:endIconMode="clear_text">
+        style="@style/TextInputStyleMargin"
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/dialogCreateTaskPriority"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
+        android:contentDescription="Task priority"
+        android:valueFrom="0.0"
+        android:valueTo="6.0"
+        android:stepSize="1.0"
+        />
 </LinearLayout>

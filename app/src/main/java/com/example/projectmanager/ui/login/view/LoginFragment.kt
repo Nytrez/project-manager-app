@@ -5,15 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.projectmanager.ProjectsActivity
 import com.example.projectmanager.R
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.databinding.ActivityLoginLoginBinding
-import com.example.projectmanager.ui.login.viewmodel.LoginActivityViewModel
 import com.example.projectmanager.ui.login.register.view.RegisterFragment
+import com.example.projectmanager.ui.login.viewmodel.LoginActivityViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class LoginFragment : Fragment() {
 
@@ -30,7 +30,6 @@ class LoginFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         _binding.buttonRegister.setOnClickListener {
-            // Replace the login fragment with the register fragment
             parentFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, RegisterFragment())
                 .addToBackStack(null)
@@ -44,13 +43,19 @@ class LoginFragment : Fragment() {
             observeLoginResponse()
         }
     }
-    private fun tryLogin(){
+
+    private fun tryLogin() {
         val email = _binding.activityLoginEnterEmail.text?.trim().toString()
         val password = _binding.activityLoginEnterPassword.text?.trim().toString()
         if (email.isNotEmpty() && password.isNotEmpty()) {
+            // TODO Turn on after testing
+//            if(!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+//                Snackbar.make(requireView(), "Invalid email", Snackbar.LENGTH_LONG).show()
+//                return
+//            }
             loginActivityViewModel.login(email, password)
         } else {
-            Toast.makeText(requireContext(), "Please fill out all the fields.", Toast.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), "Please fill all the fields", Snackbar.LENGTH_LONG).show()
         }
     }
 
@@ -58,9 +63,10 @@ class LoginFragment : Fragment() {
         loginActivityViewModel.loginResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
+                    (activity as? LoginActivity)?.hideLoadingIndicator()
                     response.data?.let {
                         com.example.projectmanager.ui.util.SessionManager.saveAuthToken(it.token)
-                        Toast.makeText(requireContext(), "Login successful", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), "Login successful", Snackbar.LENGTH_LONG).show()
                         val intent = Intent(requireActivity(), ProjectsActivity::class.java)
                         startActivity(intent)
                         requireActivity().finish()
@@ -68,13 +74,14 @@ class LoginFragment : Fragment() {
                 }
 
                 is Resource.Error -> {
+                    (activity as? LoginActivity)?.hideLoadingIndicator()
                     response.message?.let { message ->
-                        Toast.makeText(requireContext(), "An error occurred: $message", Toast.LENGTH_LONG).show()
+                        Snackbar.make(requireView(), "An error occurred: $message", Snackbar.LENGTH_LONG).show()
                     }
                 }
 
                 is Resource.Loading -> {
-                    //showProgressBar()
+                    (activity as? LoginActivity)?.showLoadingIndicator()
                 }
             }
         }

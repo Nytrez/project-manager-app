@@ -2,9 +2,8 @@ package com.example.projectmanager.data.model.projects
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
-import java.util.Date
 
-data class ProjectResponseItem (
+data class ProjectResponseItem(
     @field:SerializedName("projectId")
     var projectId: Int,
     @field:SerializedName("projectName")
@@ -17,4 +16,4 @@ data class ProjectResponseItem (
     var projectEstimatedEndDate: String,
     @field:SerializedName("projectStatus")
     var projectStatus: String,
-    ) : Serializable
+) : Serializable

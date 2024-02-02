@@ -11,9 +11,9 @@ import com.example.projectmanager.R
 import com.example.projectmanager.data.model.projects.ProjectResponseItem
 import com.google.android.material.card.MaterialCardView
 
-class ProjectsAdapter: RecyclerView.Adapter<ProjectsAdapter.ProjectsViewHolder>(){
+class ProjectsAdapter : RecyclerView.Adapter<ProjectsAdapter.ProjectsViewHolder>() {
 
-    private val differCallback = object : DiffUtil.ItemCallback<ProjectResponseItem>(){
+    private val differCallback = object : DiffUtil.ItemCallback<ProjectResponseItem>() {
         override fun areItemsTheSame(oldItem: ProjectResponseItem, newItem: ProjectResponseItem): Boolean {
             return oldItem.projectId == newItem.projectId
         }
@@ -22,11 +22,11 @@ class ProjectsAdapter: RecyclerView.Adapter<ProjectsAdapter.ProjectsViewHolder>(
             return oldItem == newItem
         }
     }
-    val differ = AsyncListDiffer(this,differCallback)
+    val differ = AsyncListDiffer(this, differCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProjectsViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_project, parent,false)
+            .inflate(R.layout.item_project, parent, false)
         return ProjectsViewHolder(view)
     }
 
@@ -39,13 +39,7 @@ class ProjectsAdapter: RecyclerView.Adapter<ProjectsAdapter.ProjectsViewHolder>(
 
             holder.itemView.findViewById<TextView>(R.id.rvProjectItemName).text = currProject.projectName
             holder.itemView.findViewById<TextView>(R.id.rvProjectItemDescription).text = currProject.projectDescription
-            holder.itemView.findViewById<TextView>(R.id.rvProjectItemStartDate).text = currProject.projectStartDate.toString()
-            holder.itemView.findViewById<TextView>(R.id.rvProjectItemEstimatedEndDate).text = currProject.projectEstimatedEndDate.toString()
 
-//            Glide.with(this)
-//                .load(currProject.thumbnail)
-//                .placeholder(R.drawable.ic_launcher_background)
-//                .into(holder.itemView.findViewById(R.id.ivGameImage))
             setOnClickListener {
                 onItemClickListener?.let { it(currProject) }
             }
@@ -56,9 +50,10 @@ class ProjectsAdapter: RecyclerView.Adapter<ProjectsAdapter.ProjectsViewHolder>(
     fun setOnItemClickListener(listener: (ProjectResponseItem) -> Unit) {
         onItemClickListener = listener
     }
+
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
 
-    class ProjectsViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){}
+    class ProjectsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
 }

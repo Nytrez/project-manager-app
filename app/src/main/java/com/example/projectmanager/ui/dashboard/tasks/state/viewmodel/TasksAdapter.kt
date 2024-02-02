@@ -11,9 +11,9 @@ import com.example.projectmanager.R
 import com.example.projectmanager.data.model.tasks.TasksResponseItem
 import com.google.android.material.card.MaterialCardView
 
-class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>(){
+class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
 
-    private val differCallback = object : DiffUtil.ItemCallback<TasksResponseItem>(){
+    private val differCallback = object : DiffUtil.ItemCallback<TasksResponseItem>() {
         override fun areItemsTheSame(oldItem: TasksResponseItem, newItem: TasksResponseItem): Boolean {
             return oldItem.taskId == newItem.taskId
         }
@@ -22,11 +22,11 @@ class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>(){
             return oldItem == newItem
         }
     }
-    val differ = AsyncListDiffer(this,differCallback)
+    val differ = AsyncListDiffer(this, differCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TasksViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_task, parent,false)
+            .inflate(R.layout.item_task, parent, false)
         return TasksViewHolder(view)
     }
 
@@ -41,15 +41,8 @@ class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>(){
 
             holder.itemView.findViewById<TextView>(R.id.taskDetailHeader).text = task.taskHeader
             holder.itemView.findViewById<TextView>(R.id.taskDetailDescriptionShort).text = task.taskDescriptionShort
-            holder.itemView.findViewById<TextView>(R.id.taskDetailPriority).text = task.taskPriority.toString()
-            holder.itemView.findViewById<TextView>(R.id.taskDetailCompletionDate).text = task.completionDate.toString()
+            holder.itemView.findViewById<TextView>(R.id.taskDetailPriority).text = "Priority: ${task.taskPriority}"
 
-            //holder.itemView.findViewById<TextView>(R.id.rvProjectItemEstimatedEndDate).text = task.projectEstimatedEndDate.toString()
-
-//            Glide.with(this)
-//                .load(currProject.thumbnail)
-//                .placeholder(R.drawable.ic_launcher_background)
-//                .into(holder.itemView.findViewById(R.id.ivGameImage))
             setOnClickListener {
                 onItemClickListener?.let { it(task) }
             }
@@ -60,9 +53,10 @@ class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>(){
     fun setOnItemClickListener(listener: (TasksResponseItem) -> Unit) {
         onItemClickListener = listener
     }
+
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
 
-    class TasksViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){}
+    class TasksViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
 }

@@ -1,6 +1,5 @@
 package com.example.projectmanager.ui.dashboard.projects.manage.details.view
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,12 +10,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.projectmanager.ProjectsActivity
 import com.example.projectmanager.R
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.databinding.FragmentManageProjectsItemBinding
 import com.example.projectmanager.ui.dashboard.projects.manage.details.viewmodel.ProjectManageViewModel
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Locale
 
 class ProjectManageFragment : Fragment() {
@@ -26,6 +27,7 @@ class ProjectManageFragment : Fragment() {
     private var _binding: FragmentManageProjectsItemBinding? = null
     lateinit var projectManageViewModel: ProjectManageViewModel
     private val args: ProjectManageFragmentArgs by navArgs()
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -46,7 +48,7 @@ class ProjectManageFragment : Fragment() {
 
         binding.projectManageRemoveProjectBtn.setOnClickListener {
             projectManageViewModel.removeProject(args.projectId)
-            Toast.makeText(activity, "Project removed", Toast.LENGTH_SHORT).show()
+            Snackbar.make(view, "Project removed", Snackbar.LENGTH_SHORT).show()
             findNavController().popBackStack()
         }
 
@@ -62,49 +64,40 @@ class ProjectManageFragment : Fragment() {
             )
         }
 
-        binding.projectManageProjectStartDate.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-                calendar.set(Calendar.YEAR, year)
-                calendar.set(Calendar.MONTH, monthOfYear)
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        binding.projectManageProjectStartDateBox.setStartIconOnClickListener {
+            val datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select completion date")
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build()
 
-                val myFormat = "yyyy-MM-dd" //In which you need put here
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                binding.projectManageProjectStartDate.text = sdf.format(calendar.time)
+            datePicker.show(childFragmentManager, datePicker.toString())
+
+            datePicker.addOnPositiveButtonClickListener { selection ->
+                val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                binding.projectManageProjectStartDate.setText(dateFormatter.format(selection))
             }
-
-            DatePickerDialog(requireContext(), dateSetListener,
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)).show()
         }
 
-        binding.projectManageProjectEndDate.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-                calendar.set(Calendar.YEAR, year)
-                calendar.set(Calendar.MONTH, monthOfYear)
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        binding.projectManageProjectEndDateBox.setStartIconOnClickListener {
+            val datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select completion date")
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build()
 
-                val myFormat = "yyyy-MM-dd" //In which you need put here
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                binding.projectManageProjectEndDate.text = sdf.format(calendar.time)
+            datePicker.show(childFragmentManager, datePicker.toString())
+
+            datePicker.addOnPositiveButtonClickListener { selection ->
+                val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                binding.projectManageProjectEndDate.setText(dateFormatter.format(selection))
             }
-
-            DatePickerDialog(requireContext(), dateSetListener,
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)).show()
         }
-
 
         binding.projectManageSaveChangesBtn.setOnClickListener {
 
-            val newName = binding.projectManageProjectName.text.trim().toString()
-            val newDescription = binding.projectManageProjectDescription.text.trim().toString()
-            val newStartDate = binding.projectManageProjectStartDate.text.trim().toString()
-            val newEndDate = binding.projectManageProjectEndDate.text.trim().toString()
+            val newName = binding.projectManageProjectName.text?.trim().toString()
+            val newDescription = binding.projectManageProjectDescription.text?.trim().toString()
+            val newStartDate = binding.projectManageProjectStartDate.text?.trim().toString()
+            val newEndDate = binding.projectManageProjectEndDate.text?.trim().toString()
 
             projectManageViewModel.changeProjectDetails(
                 args.projectId,
@@ -115,37 +108,36 @@ class ProjectManageFragment : Fragment() {
                 "Inactive"
             )
 
-            Toast.makeText(activity, "Changes saved", Toast.LENGTH_SHORT).show()
+            Snackbar.make(view, "Project details changed", Snackbar.LENGTH_SHORT).show()
         }
         projectManageViewModel.getProjectDetails(args.projectId)
         observeResponses()
     }
 
 
-
     private fun observeResponses() {
         projectManageViewModel.projectDetails.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.data?.let {
                         binding.projectManageProjectName.setText(it.projectName)
                         binding.projectManageProjectDescription.setText(it.projectDescription)
-                        binding.projectManageProjectStartDate.text = it.projectStartDate
-                        binding.projectManageProjectEndDate.text = it.projectEstimatedEndDate
+                        binding.projectManageProjectStartDate.setText(it.projectStartDate)
+                        binding.projectManageProjectEndDate.setText(it.projectEstimatedEndDate)
                     }
                 }
 
                 is Resource.Error -> {
                     Log.d(LOG_TAG, "Error: ${response.message}")
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, "An error occurred: $message", Snackbar.LENGTH_SHORT).show()
                     }
                 }
 
                 is Resource.Loading -> {
-                    //showProgressBar()
+                    (activity as? ProjectsActivity)?.showLoadingIndicator()
                 }
             }
         }
@@ -155,25 +147,25 @@ class ProjectManageFragment : Fragment() {
         projectManageViewModel.projectChangeResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.data?.let {
                         //TODO RETURN
 
-                        Toast.makeText(activity, "something happened", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, "Project details changed", Snackbar.LENGTH_SHORT).show()
                         //findNavController().popBackStack()
                     }
                 }
 
                 is Resource.Error -> {
                     Log.d(LOG_TAG, "Error: ${response.message}")
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), "An error occurred: $message", Snackbar.LENGTH_SHORT).show()
                     }
                 }
 
                 is Resource.Loading -> {
-                    //showProgressBar()
+                    (activity as? ProjectsActivity)?.showLoadingIndicator()
                 }
             }
         }

@@ -8,22 +8,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.PackageManagerCompat.LOG_TAG
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.projectmanager.ProjectsActivity
 import com.example.projectmanager.R
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.ui.dashboard.projects.manage.details.users.view.UserManageAdapter
 import com.example.projectmanager.ui.dashboard.tasks.detail.edit.viewmodel.TaskEditSelectUserViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class UserSelectDialogFragment : DialogFragment() {
 
     private lateinit var usersAdapter: UserManageAdapter
     lateinit var taskEditSelectUserViewModel: TaskEditSelectUserViewModel
 
+    val LOG_TAG = "UserSelectDialogFragment"
+
     companion object {
-        fun newInstance(projectId: Int, taskId : Int): UserSelectDialogFragment {
+        fun newInstance(projectId: Int, taskId: Int): UserSelectDialogFragment {
             val args = Bundle()
             args.putInt("projectId", projectId)
             args.putInt("taskId", taskId)
@@ -45,11 +50,9 @@ class UserSelectDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-
-        // Replace this with your actual data
         taskEditSelectUserViewModel = ViewModelProvider(this)[TaskEditSelectUserViewModel::class.java]
         setUpRecyclerView()
-        Log.d("Petara", "ProjectId: ${arguments?.getInt("projectId")}")
+        Log.d(LOG_TAG, "ProjectId: ${arguments?.getInt("projectId")}")
         arguments?.getInt("projectId")?.let { taskEditSelectUserViewModel.getProjectUsers(it) }
         observeResponses()
     }
@@ -63,22 +66,22 @@ class UserSelectDialogFragment : DialogFragment() {
         taskEditSelectUserViewModel.projectUsers.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.data?.let {
                         usersAdapter.differ.submitList(it)
                     }
                 }
 
                 is Resource.Error -> {
-                    Log.d("Dialog", "Error: ${response.message}")
-                    //hideProgressBar()
+                    Log.d(LOG_TAG, "Error: ${response.message}")
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), "An error occurred: $message", Snackbar.LENGTH_LONG).show()
                     }
                 }
 
                 is Resource.Loading -> {
-                    //showProgressBar()
+                    (activity as? ProjectsActivity)?.showLoadingIndicator()
                 }
             }
         }
@@ -88,7 +91,6 @@ class UserSelectDialogFragment : DialogFragment() {
     private fun setUpRecyclerView() {
         usersAdapter = UserManageAdapter()
         usersAdapter.setOnItemClickListener { user ->
-            // Pass the selected user back to the parent fragment
             (parentFragment as? TaskEditFragment)?.onUserSelected(user)
             dismiss()
         }

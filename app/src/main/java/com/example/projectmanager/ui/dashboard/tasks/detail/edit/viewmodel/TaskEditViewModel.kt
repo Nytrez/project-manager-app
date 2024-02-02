@@ -6,14 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.projectmanager.data.api.RetrofitBuilder
 import com.example.projectmanager.data.model.tasks.TasksResponseItem
-import com.example.projectmanager.data.model.tasks.manage.TaskRemoveRequest
 import com.example.projectmanager.data.model.tasks.manage.TaskUpdateRequest
 import com.example.projectmanager.data.util.Resource
-import com.example.projectmanager.data.util.ResponseWrapper
 import com.example.projectmanager.ui.util.SessionManager
 import com.example.projectmanager.ui.util.handleApiResponse
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import java.io.IOException
 
 class TaskEditViewModel : ViewModel() {
@@ -61,7 +58,8 @@ class TaskEditViewModel : ViewModel() {
 
 
     fun updateTask(
-        taskId: Int, taskDescriptionShort: String?, taskHeader: String?, taskDescription: String?, responsiblePersonId: Int?, priority:
+        taskId: Int, taskDescriptionShort: String?, taskHeader: String?, taskDescription: String?, responsiblePersonEmail: String?,
+        priority:
         Int?,
         status: Int?, dueDate: String?, completionDate: String?
     ) {
@@ -74,7 +72,7 @@ class TaskEditViewModel : ViewModel() {
                     taskDescriptionShort = taskDescriptionShort,
                     taskHeader = taskHeader,
                     taskDescription = taskDescription,
-                    responsiblePersonId = responsiblePersonId,
+                    responsiblePersonEmail = responsiblePersonEmail,
                     priority = priority,
                     status = status,
                     dueDate = dueDate,
@@ -84,7 +82,7 @@ class TaskEditViewModel : ViewModel() {
                 val response = RetrofitBuilder.api.updateTaskInProject(SessionManager.fetchAuthToken()!!, task)
                 handleApiResponse(response, taskEditResponse)
             } catch (t: Throwable) {
-                Log.d(LOG_TAG, "error whhile requesting comments: $t")
+                Log.d(LOG_TAG, "Error while requesting comments: $t")
                 when (t) {
                     is IOException -> taskEditResponse.postValue(Resource.Error("Network Failure"))
                     else -> taskEditResponse.postValue(Resource.Error(t.message ?: "Unknown error"))

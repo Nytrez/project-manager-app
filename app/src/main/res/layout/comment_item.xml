@@ -16,12 +16,12 @@
         card_view:cardCornerRadius="3dp"
         card_view:cardElevation="5dp"
         card_view:cardUseCompatPadding="false"
-        android:layout_margin="5dp"
+        android:layout_margin="2dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_margin="2dp"
+        android:layout_margin="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -43,6 +43,7 @@
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
                 android:text="username"
+                android:layout_marginBottom="5dp"
                 />
 
             <TextView

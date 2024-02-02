@@ -1,18 +1,16 @@
 package com.example.projectmanager.ui.dashboard.tasks.state.viewmodel
 
+//import com.bumptech.glide.Glide.init
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-//import com.bumptech.glide.Glide.init
 import com.example.projectmanager.data.api.RetrofitBuilder
-import com.example.projectmanager.data.util.ResponseWrapper
 import com.example.projectmanager.data.model.tasks.TasksResponse
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.ui.util.SessionManager
 import com.example.projectmanager.ui.util.handleApiResponse
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import java.io.IOException
 
 class TasksViewModel : ViewModel() {
@@ -21,7 +19,7 @@ class TasksViewModel : ViewModel() {
 
     val allProjectTasks: MutableLiveData<Resource<TasksResponse>> = MutableLiveData()
 
-     fun getAllProjectTasks(projectId : Int, taskStatus : Int) {
+    fun getAllProjectTasks(projectId: Int, taskStatus: Int) {
         viewModelScope.launch {
             try {
                 allProjectTasks.postValue(Resource.Loading())

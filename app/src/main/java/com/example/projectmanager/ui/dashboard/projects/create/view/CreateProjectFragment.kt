@@ -1,6 +1,5 @@
 package com.example.projectmanager.ui.dashboard.projects.create.view
 
-import android.app.DatePickerDialog
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,11 +9,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.projectmanager.ProjectsActivity
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.databinding.FragmentAddProjectBinding
 import com.example.projectmanager.ui.dashboard.projects.create.viewmodel.CreateProjectViewModel
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
+import isValidDateFormat
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Locale
 
 class CreateProjectFragment : Fragment() {
@@ -23,8 +25,6 @@ class CreateProjectFragment : Fragment() {
 
     private var _binding: FragmentAddProjectBinding? = null
     lateinit var createProjectViewModel: CreateProjectViewModel
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -47,40 +47,32 @@ class CreateProjectFragment : Fragment() {
             observeProjectCreateResponse()
         }
 
-        binding.addProjectStartDate.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-                calendar.set(Calendar.YEAR, year)
-                calendar.set(Calendar.MONTH, monthOfYear)
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        binding.addProjectStartDateBox.setStartIconOnClickListener {
+            val datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select completion date")
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build()
 
-                val myFormat = "yyyy-MM-dd" //In which you need put here
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                binding.addProjectStartDate.setText(sdf.format(calendar.time))
+            datePicker.show(childFragmentManager, datePicker.toString())
+
+            datePicker.addOnPositiveButtonClickListener { selection ->
+                val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                binding.addProjectStartDate.setText(dateFormatter.format(selection))
             }
-
-            DatePickerDialog(requireContext(), dateSetListener,
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)).show()
         }
 
-        binding.addProjectEndDate.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val dateSetListener = DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-                calendar.set(Calendar.YEAR, year)
-                calendar.set(Calendar.MONTH, monthOfYear)
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        binding.addProjectEndDateBox.setStartIconOnClickListener {
+            val datePicker = MaterialDatePicker.Builder.datePicker()
+                .setTitleText("Select completion date")
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build()
 
-                val myFormat = "yyyy-MM-dd" //In which you need put here
-                val sdf = SimpleDateFormat(myFormat, Locale.US)
-                binding.addProjectEndDate.setText(sdf.format(calendar.time))
+            datePicker.show(childFragmentManager, datePicker.toString())
+
+            datePicker.addOnPositiveButtonClickListener { selection ->
+                val dateFormatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                binding.addProjectEndDate.setText(dateFormatter.format(selection))
             }
-
-            DatePickerDialog(requireContext(), dateSetListener,
-                calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH),
-                calendar.get(Calendar.DAY_OF_MONTH)).show()
         }
     }
 
@@ -89,25 +81,22 @@ class CreateProjectFragment : Fragment() {
         val projectDescription = binding.addProjectDescription.text?.trim().toString()
         val projectEstimatedEndDateString = binding.addProjectEndDate.text?.trim().toString()
         val projectStartDateString = binding.addProjectStartDate.text?.trim().toString()
-        //val projectStartDate = binding.addProjectStartDate.text.trim().toString()
 
-//        val myFormat = "yyyy-MM-dd" // format daty, który używasz // TODO Daty?
-//        val sdf = SimpleDateFormat(myFormat, Locale.US)
+        if (!isValidDateFormat(projectStartDateString)) {
+            binding.addProjectStartDate.error = "Invalid date format (different from yyyy-MM-dd)"
+            return
+        }
+
+        if (!isValidDateFormat(projectEstimatedEndDateString)) {
+            binding.addProjectEndDate.error = "Invalid date format (different from yyyy-MM-dd)"
+            return
+        }
 
 
         if (projectName.isNotEmpty() && projectDescription.isNotEmpty() && projectStartDateString.isNotEmpty() && projectEstimatedEndDateString.isNotEmpty()) {
-//            val projectStartDate: Date = sdf.parse(projectStartDateString)!!
-//            val projectEstimatedEndDate: Date = sdf.parse(projectEstimatedEndDateString)!!
-//
-//            // Format the date to string before logging
-//            val formattedStartDate = sdf.format(projectStartDate)
-//            val formattedEndDate = sdf.format(projectEstimatedEndDate)
-//
-//            Log.d(LOG_TAG, "tryCreateProject start: $formattedStartDate")
-//            Log.d(LOG_TAG, "tryCreateProject end: $formattedEndDate")
             createProjectViewModel.createProject(projectName, projectDescription, projectStartDateString, projectEstimatedEndDateString)
         } else {
-            Toast.makeText(requireContext(), "Please fill out all the fields.", Toast.LENGTH_SHORT).show()
+            Snackbar.make(requireView(), "Please fill out all fields.", Snackbar.LENGTH_SHORT).show()
         }
     }
 
@@ -120,21 +109,21 @@ class CreateProjectFragment : Fragment() {
         createProjectViewModel.projectCreateResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    //hideProgressBar()
-                    Toast.makeText(activity, "Successfully created", Toast.LENGTH_SHORT).show()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
+                    Snackbar.make(binding.root, "Project created successfully.", Snackbar.LENGTH_SHORT).show()
                     findNavController().popBackStack()
                 }
 
                 is Resource.Error -> {
                     Log.d(LOG_TAG, "Error: ${response.message}")
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, "An error occurred: $message", Snackbar.LENGTH_SHORT).show()
                     }
                 }
 
                 is Resource.Loading -> {
-                    //showProgressBar()
+                    (activity as? ProjectsActivity)?.showLoadingIndicator()
                 }
             }
         }

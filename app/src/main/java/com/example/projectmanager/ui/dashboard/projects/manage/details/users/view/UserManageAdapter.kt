@@ -9,10 +9,11 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.projectmanager.R
 import com.example.projectmanager.data.model.projects.manage.user.UserDetailsProjectResponseItem
+import com.google.android.material.card.MaterialCardView
 
-class UserManageAdapter : RecyclerView.Adapter<UserManageAdapter.UserViewHolder>(){
+class UserManageAdapter : RecyclerView.Adapter<UserManageAdapter.UserViewHolder>() {
 
-    private val differCallback = object : DiffUtil.ItemCallback<UserDetailsProjectResponseItem>(){
+    private val differCallback = object : DiffUtil.ItemCallback<UserDetailsProjectResponseItem>() {
         override fun areItemsTheSame(oldItem: UserDetailsProjectResponseItem, newItem: UserDetailsProjectResponseItem): Boolean {
             return oldItem.userId == newItem.userId
         }
@@ -21,17 +22,19 @@ class UserManageAdapter : RecyclerView.Adapter<UserManageAdapter.UserViewHolder>
             return oldItem == newItem
         }
     }
-    val differ = AsyncListDiffer(this,differCallback)
+    val differ = AsyncListDiffer(this, differCallback)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.user_details_item, parent,false)
+            .inflate(R.layout.user_details_item, parent, false)
         return UserViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: UserViewHolder, position: Int) {
         val user = differ.currentList[position]
-        //log.d("TasksAdapter", "onBindViewHolder: $task")
+
+        val cardView = holder.itemView.findViewById<MaterialCardView>(R.id.projectManageUserDetailsCardView)
+
         holder.itemView.apply {
             holder.itemView.findViewById<TextView>(R.id.projectManageUserDetailsEmail).text = user.email
             holder.itemView.findViewById<TextView>(R.id.projectManageUserDetailsName).text = user.name
@@ -39,13 +42,7 @@ class UserManageAdapter : RecyclerView.Adapter<UserManageAdapter.UserViewHolder>
             holder.itemView.findViewById<TextView>(R.id.projectManageUserDetailsPermissions).text = user.permissions.toString()
             holder.itemView.findViewById<TextView>(R.id.projectManageUserDetailsRole).text = user.role
 
-            //holder.itemView.findViewById<TextView>(R.id.rvProjectItemEstimatedEndDate).text = task.projectEstimatedEndDate.toString()
-
-//            Glide.with(this)
-//                .load(currProject.thumbnail)
-//                .placeholder(R.drawable.ic_launcher_background)
-//                .into(holder.itemView.findViewById(R.id.ivGameImage))
-            setOnClickListener {
+            cardView.setOnClickListener {
                 onItemClickListener?.let { it(user) }
             }
         }
@@ -55,9 +52,10 @@ class UserManageAdapter : RecyclerView.Adapter<UserManageAdapter.UserViewHolder>
     fun setOnItemClickListener(listener: (UserDetailsProjectResponseItem) -> Unit) {
         onItemClickListener = listener
     }
+
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
 
-    class UserViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){}
+    class UserViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {}
 }

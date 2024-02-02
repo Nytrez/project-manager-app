@@ -5,17 +5,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.projectmanager.ProjectsActivity
 import com.example.projectmanager.R
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.databinding.FragmentTasksToDoBinding
 import com.example.projectmanager.ui.dashboard.tasks.state.viewmodel.TasksAdapter
 import com.example.projectmanager.ui.dashboard.tasks.state.viewmodel.TasksViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class TasksToDoFragment : Fragment() {
 
@@ -26,8 +27,6 @@ class TasksToDoFragment : Fragment() {
     lateinit var tasksViewModel: TasksViewModel
 
     private val args: TasksToDoFragmentArgs by navArgs()
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
 
@@ -44,7 +43,7 @@ class TasksToDoFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("TasksToDo", "ProjectId: ${args.projectId}")
+        Log.d(LOG_TAG, "ProjectId: ${args.projectId}")
 
         tasksViewModel = ViewModelProvider(this)[TasksViewModel::class.java]
 
@@ -62,7 +61,6 @@ class TasksToDoFragment : Fragment() {
                 bundle
             )
         }
-
         observeProjects()
     }
 
@@ -70,29 +68,28 @@ class TasksToDoFragment : Fragment() {
         tasksViewModel.allProjectTasks.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.data?.let {
                         tasksAdapter.differ.submitList(it)
                     }
                 }
 
                 is Resource.Error -> {
-                    Log.d("TasksToDo", "Error: ${response.message}")
-                    //hideProgressBar()
+                    Log.d(LOG_TAG, "Error: ${response.message}")
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, "An error occurred: $message", Snackbar.LENGTH_LONG).show()
                     }
                 }
 
                 is Resource.Loading -> {
-                    //showProgressBar()
+                    (activity as? ProjectsActivity)?.showLoadingIndicator()
                 }
             }
         }
-
     }
 
-    private fun setUpRecyclerView(){
+    private fun setUpRecyclerView() {
         tasksAdapter = TasksAdapter()
         binding.tasksRvToDo.apply {
             adapter = tasksAdapter

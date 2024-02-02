@@ -1,6 +1,7 @@
 package com.example.projectmanager
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
@@ -19,12 +20,16 @@ class ProjectsActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         navController = findNavController(R.id.nav_host_fragment_activity_main)
-
-        // Set up the ActionBar with the NavController
         NavigationUI.setupActionBarWithNavController(this, navController)
-
-        // Set the default fragment to R.id.navigation_dashboard
         navController.navigate(R.id.navigation_dashboard)
+    }
+
+    fun showLoadingIndicator() {
+        binding.progressIndicator.visibility = View.VISIBLE
+    }
+
+    fun hideLoadingIndicator() {
+        binding.progressIndicator.visibility = View.GONE
     }
 
     override fun onSupportNavigateUp(): Boolean {

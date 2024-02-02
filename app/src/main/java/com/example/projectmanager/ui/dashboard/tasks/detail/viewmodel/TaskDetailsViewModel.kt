@@ -23,7 +23,7 @@ class TaskDetailsViewModel() : ViewModel() {
     val commentPostResponse: MutableLiveData<Resource<Unit>> = MutableLiveData()
 
 
-    fun getAllTaskDetails(taskId : Int) {
+    fun getAllTaskDetails(taskId: Int) {
         viewModelScope.launch {
             try {
                 taskDetailsResponse.postValue(Resource.Loading())
@@ -41,8 +41,7 @@ class TaskDetailsViewModel() : ViewModel() {
     }
 
 
-
-    fun getAllComments(taskId : Int){
+    fun getAllComments(taskId: Int) {
         viewModelScope.launch {
             try {
                 commentsDetailsResponse.postValue(Resource.Loading())

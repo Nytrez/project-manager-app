@@ -5,15 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.projectmanager.data.api.RetrofitBuilder
-import com.example.projectmanager.data.util.ResponseWrapper
-import com.example.projectmanager.data.model.projects.manage.project.ProjectChangeRequest
 import com.example.projectmanager.data.model.projects.ProjectResponseItem
-import com.example.projectmanager.data.model.projects.manage.project.ProjectDeleteRequest
+import com.example.projectmanager.data.model.projects.manage.project.ProjectChangeRequest
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.ui.util.SessionManager
 import com.example.projectmanager.ui.util.handleApiResponse
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import java.io.IOException
 
 class ProjectManageViewModel : ViewModel() {

@@ -7,18 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.projectmanager.ProjectsActivity
 import com.example.projectmanager.R
 import com.example.projectmanager.data.model.projects.manage.user.UserDetailsProjectResponseItem
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.databinding.FragmentManageUsersBinding
 import com.example.projectmanager.ui.dashboard.projects.manage.details.users.viewmodel.UserManageViewModel
+import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.Snackbar
 
 class UserManageFragment : Fragment() {
@@ -30,8 +31,6 @@ class UserManageFragment : Fragment() {
     private lateinit var usersAdapter: UserManageAdapter
     private val args: UserManageFragmentArgs by navArgs()
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -62,7 +61,7 @@ class UserManageFragment : Fragment() {
         observeResponses()
     }
 
-    private fun showUserEditDialog(userDetails : UserDetailsProjectResponseItem) {
+    private fun showUserEditDialog(userDetails: UserDetailsProjectResponseItem) {
         val context = requireContext()
         val builder = AlertDialog.Builder(context)
         builder.setTitle("Update user")
@@ -71,11 +70,11 @@ class UserManageFragment : Fragment() {
         builder.setView(inputLayout)
 
         val userRoleInput = inputLayout.findViewById<EditText>(R.id.projectManageUserManagePopupRole)
-        val userPermissionInput = inputLayout.findViewById<EditText>(R.id.projectManageUserManagePopupPermissions)
+        val userPermissionInput = inputLayout.findViewById<Slider>(R.id.projectManageUserManagePopupPermissions)
 
         builder.setPositiveButton("Update", null)
-        builder.setNegativeButton("Cancel", null)
-        builder.setNeutralButton("Remove from project", null)
+        builder.setNegativeButton("Remove from project", null)
+        builder.setNeutralButton("Cancel", null)
 
         val dialog = builder.create()
         dialog.show()
@@ -84,7 +83,7 @@ class UserManageFragment : Fragment() {
             setTextColor(Color.GREEN)
             setOnClickListener {
                 val user = userRoleInput.text.toString()
-                val userPermission = userPermissionInput.text.toString()
+                val userPermission = userPermissionInput.value
 
                 Log.d(LOG_TAG, "showInputDialog: $user, $userPermission")
 
@@ -112,7 +111,7 @@ class UserManageFragment : Fragment() {
 
         val userEmailInput = inputLayout.findViewById<EditText>(R.id.dialogAddUserEmail)
         val userRoleInput = inputLayout.findViewById<EditText>(R.id.dialogAddUserRole)
-        val userPermissionInput = inputLayout.findViewById<EditText>(R.id.dialogAddUserPermissions)
+        val userPermissionInput = inputLayout.findViewById<Slider>(R.id.dialogAddUserPermissions)
 
         builder.setPositiveButton("Add", null)
         builder.setNegativeButton("Cancel", null)
@@ -125,7 +124,7 @@ class UserManageFragment : Fragment() {
             setOnClickListener {
                 val userEmail = userEmailInput.text.toString()
                 val userRole = userRoleInput.text.toString()
-                val userPermission = userPermissionInput.text.toString().toInt()
+                val userPermission = userPermissionInput.value.toInt()
 
                 Log.d(LOG_TAG, "adding user: $userEmail")
 
@@ -140,7 +139,7 @@ class UserManageFragment : Fragment() {
         userManageViewModel.projectUsers.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.data?.let {
                         usersAdapter.differ.submitList(it)
                     }
@@ -148,14 +147,14 @@ class UserManageFragment : Fragment() {
 
                 is Resource.Error -> {
                     Log.d(LOG_TAG, "Error: ${response.message}")
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT).show()
+                       Snackbar.make(requireView(), "An error occurred: $message", Snackbar.LENGTH_SHORT).show()
                     }
                 }
 
                 is Resource.Loading -> {
-                    //showProgressBar()
+                    (activity as? ProjectsActivity)?.showLoadingIndicator()
                 }
             }
         }
@@ -163,25 +162,25 @@ class UserManageFragment : Fragment() {
         userManageViewModel.userChangeResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.data?.let {
-                        //TODO RETURN
 
-                        Toast.makeText(activity, "its fine", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), "User updated", Snackbar.LENGTH_SHORT).show()
+                        //TODO Maybe dont return?
                         findNavController().popBackStack()
                     }
                 }
 
                 is Resource.Error -> {
                     Log.d(LOG_TAG, "Error: ${response.message}")
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), "An error occurred: $message", Snackbar.LENGTH_SHORT).show()
                     }
                 }
 
                 is Resource.Loading -> {
-                    //showProgressBar()
+                    (activity as? ProjectsActivity)?.showLoadingIndicator()
                 }
             }
         }
@@ -190,9 +189,9 @@ class UserManageFragment : Fragment() {
         userManageViewModel.userDeleteResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.data?.let {
-                        //TODO RETURN
+                        //TODO Maybe dont return?
 
                         view?.let { it1 -> Snackbar.make(it1, "User deleted", Snackbar.LENGTH_SHORT).show() }
                         findNavController().popBackStack()
@@ -201,14 +200,14 @@ class UserManageFragment : Fragment() {
 
                 is Resource.Error -> {
                     Log.d(LOG_TAG, "Error: ${response.message}")
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), "An error occurred: $message", Snackbar.LENGTH_SHORT).show()
                     }
                 }
 
                 is Resource.Loading -> {
-                    //showProgressBar()
+                    (activity as? ProjectsActivity)?.showLoadingIndicator()
                 }
             }
         }
@@ -216,24 +215,24 @@ class UserManageFragment : Fragment() {
         userManageViewModel.userAddResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.data?.let {
-                        //TODO RETURN
                         view?.let { it1 -> Snackbar.make(it1, "User added", Snackbar.LENGTH_SHORT).show() }
+                        //TODO RETURN
                         findNavController().popBackStack()
                     }
                 }
 
                 is Resource.Error -> {
                     Log.d(LOG_TAG, "Error: ${response.message}")
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(requireView(), "An error occurred: $message", Snackbar.LENGTH_SHORT).show()
                     }
                 }
 
                 is Resource.Loading -> {
-                    //showProgressBar()
+                    (activity as? ProjectsActivity)?.showLoadingIndicator()
                 }
             }
         }

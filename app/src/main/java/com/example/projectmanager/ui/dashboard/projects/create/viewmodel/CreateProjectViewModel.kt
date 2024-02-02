@@ -5,22 +5,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.projectmanager.data.api.RetrofitBuilder
-import com.example.projectmanager.data.util.ResponseWrapper
 import com.example.projectmanager.data.model.projects.manage.project.ProjectCreateRequest
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.ui.util.SessionManager
 import com.example.projectmanager.ui.util.handleApiResponse
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import java.io.IOException
 
 class CreateProjectViewModel : ViewModel() {
 
     val LOG_TAG = "CreateProjectViewModel"
 
-    val projectCreateResponse : MutableLiveData<Resource<Unit>> = MutableLiveData()
+    val projectCreateResponse: MutableLiveData<Resource<Unit>> = MutableLiveData()
 
-    fun createProject(name : String, description : String, startDate : String, endDate : String) {
+    fun createProject(name: String, description: String, startDate: String, endDate: String) {
         viewModelScope.launch {
             try {
                 projectCreateResponse.postValue(Resource.Loading())

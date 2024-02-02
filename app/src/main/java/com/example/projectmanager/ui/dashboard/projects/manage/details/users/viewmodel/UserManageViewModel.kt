@@ -5,24 +5,20 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.projectmanager.data.api.RetrofitBuilder
-import com.example.projectmanager.data.util.ResponseWrapper
 import com.example.projectmanager.data.model.projects.manage.user.UserDetailsChangeProjectRequest
 import com.example.projectmanager.data.model.projects.manage.user.UserDetailsProjectResponse
 import com.example.projectmanager.data.model.projects.manage.user.UserProjectAddRequest
-import com.example.projectmanager.data.model.projects.manage.user.UserProjectRemoveRequest
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.ui.util.SessionManager
 import com.example.projectmanager.ui.util.handleApiResponse
-import com.google.gson.Gson
 import kotlinx.coroutines.launch
-import retrofit2.Response
 import java.io.IOException
 
 class UserManageViewModel : ViewModel() {
 
     val LOG_TAG = "UserManageProjectsViewModel"
 
-    val projectUsers : MutableLiveData<Resource<UserDetailsProjectResponse>> = MutableLiveData()
+    val projectUsers: MutableLiveData<Resource<UserDetailsProjectResponse>> = MutableLiveData()
     val userChangeResponse: MutableLiveData<Resource<Unit>> = MutableLiveData()
     val userDeleteResponse: MutableLiveData<Resource<Unit>> = MutableLiveData()
     val userAddResponse: MutableLiveData<Resource<Unit>> = MutableLiveData()

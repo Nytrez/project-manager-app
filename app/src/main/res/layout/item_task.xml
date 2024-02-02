@@ -14,9 +14,9 @@
         android:focusable="true">
 
     <LinearLayout
+        android:layout_margin="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -28,6 +28,7 @@
                 android:id="@+id/taskDetailHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:text="TextView"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -49,15 +50,6 @@
             android:orientation="vertical">
 
         <TextView
-            android:id="@+id/taskDetailStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="end"
-            android:text="TextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/taskDetailPriority"
             android:layout_gravity="end"
             android:layout_width="wrap_content"
@@ -66,14 +58,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/taskDetailStatus" />
 
-        <TextView
-            android:id="@+id/taskDetailCompletionDate"
-            android:layout_width="wrap_content"
-            android:layout_gravity="end"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/taskDetailPriority" />
         </LinearLayout>
 
     </LinearLayout>

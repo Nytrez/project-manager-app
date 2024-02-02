@@ -23,7 +23,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextInputStyleMargin"
-            android:hint="Email">
+            android:hint="Email"
+            app:endIconMode="clear_text"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/activity_login_enter_email"
@@ -37,6 +39,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/TextInputStyleMargin"
+            android:hint="Password"
             app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText

@@ -5,17 +5,18 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.projectmanager.ProjectsActivity
 import com.example.projectmanager.R
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.databinding.FragmentTasksDoneBinding
 import com.example.projectmanager.ui.dashboard.tasks.state.viewmodel.TasksAdapter
 import com.example.projectmanager.ui.dashboard.tasks.state.viewmodel.TasksViewModel
+import com.google.android.material.snackbar.Snackbar
 
 
 class TasksDoneFragment : Fragment() {
@@ -27,8 +28,6 @@ class TasksDoneFragment : Fragment() {
     lateinit var tasksViewModel: TasksViewModel
 
     private val args: TasksInProgressFragmentArgs by navArgs()
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
 
@@ -70,7 +69,7 @@ class TasksDoneFragment : Fragment() {
         tasksViewModel.allProjectTasks.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.data?.let {
                         tasksAdapter.differ.submitList(it)
                     }
@@ -78,21 +77,21 @@ class TasksDoneFragment : Fragment() {
 
                 is Resource.Error -> {
                     Log.d(LOG_TAG, "Error: ${response.message}")
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, "Error: $message", Snackbar.LENGTH_LONG).show()
                     }
                 }
 
                 is Resource.Loading -> {
-                    //showProgressBar()
+                    (activity as? ProjectsActivity)?.showLoadingIndicator()
                 }
             }
         }
 
     }
 
-    private fun setUpRecyclerView(){
+    private fun setUpRecyclerView() {
         tasksAdapter = TasksAdapter()
         binding.tasksRvDone.apply {
             adapter = tasksAdapter

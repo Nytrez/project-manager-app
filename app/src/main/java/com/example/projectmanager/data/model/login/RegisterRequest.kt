@@ -1,6 +1,6 @@
 package com.example.projectmanager.data.model.login
 
-data class RegisterRequest (
+data class RegisterRequest(
     val email: String,
     val password: String,
     val name: String,

@@ -11,10 +11,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.projectmanager.ProjectsActivity
 import com.example.projectmanager.R
 import com.example.projectmanager.data.util.Resource
 import com.example.projectmanager.databinding.FragmentTaskDetailsBinding
 import com.example.projectmanager.ui.dashboard.tasks.detail.viewmodel.TaskDetailsViewModel
+import com.google.android.material.snackbar.Snackbar
 
 class TaskDetailsFragment : Fragment() {
 
@@ -25,8 +27,6 @@ class TaskDetailsFragment : Fragment() {
     lateinit var taskDetailsViewModel: TaskDetailsViewModel
 
     private val args: TaskDetailsFragmentArgs by navArgs()
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -59,16 +59,15 @@ class TaskDetailsFragment : Fragment() {
 
 
         binding.taskDetailPostCommentButton.setOnClickListener {
-            val commentText = binding.taskDetailCommentInput.text.trim().toString()
+            val commentText = binding.taskDetailCommentInput.text?.trim().toString()
             if (commentText.isNotEmpty()) {
                 taskDetailsViewModel.postComment(args.taskId, commentText)
                 observeCommentPostResponse()
             } else {
-                Toast.makeText(requireContext(), "Please fill out the comment.", Toast.LENGTH_SHORT).show()
+                Snackbar.make(view, "Comment cannot be empty.", Snackbar.LENGTH_SHORT).show()
             }
         }
 
-        //commentsAdapter.setOnItemHoldListener
         // TODO usuwanie komentarzy
 
         taskDetailsViewModel.getAllTaskDetails(args.taskId)
@@ -81,23 +80,23 @@ class TaskDetailsFragment : Fragment() {
         taskDetailsViewModel.commentPostResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.data?.let {
-                        Toast.makeText(activity, "Comment posted successfully.", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, "Comment posted successfully.", Snackbar.LENGTH_SHORT).show()
                         taskDetailsViewModel.getAllComments(args.taskId)
                     }
                 }
 
                 is Resource.Error -> {
                     Log.d(LOG_TAG, "Error: ${response.message}")
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, "An error occurred: $message", Snackbar.LENGTH_SHORT).show()
                     }
                 }
 
                 is Resource.Loading -> {
-                    //showProgressBar()
+                    (activity as? ProjectsActivity)?.showLoadingIndicator()
                 }
             }
         }
@@ -108,7 +107,7 @@ class TaskDetailsFragment : Fragment() {
         taskDetailsViewModel.commentsDetailsResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.data?.let {
                         commentsAdapter.differ.submitList(it)
                     }
@@ -116,14 +115,14 @@ class TaskDetailsFragment : Fragment() {
 
                 is Resource.Error -> {
                     Log.d(LOG_TAG, "Error: ${response.message}")
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, "An error occurred: $message", Snackbar.LENGTH_SHORT).show()
                     }
                 }
 
                 is Resource.Loading -> {
-                    //showProgressBar()
+                    (activity as? ProjectsActivity)?.showLoadingIndicator()
                 }
             }
         }
@@ -131,34 +130,38 @@ class TaskDetailsFragment : Fragment() {
         taskDetailsViewModel.taskDetailsResponse.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.data?.let {
                         binding.taskDetailsHeader.text = it.taskHeader
                         binding.taskDetailsDescriptionShort.text = it.taskDescriptionShort
                         binding.taskDetailsDescription.text = it.taskDescription
                         binding.taskDetailPriority.text = it.taskPriority.toString()
-                        binding.taskDetailCompletionDate.text = it.completionDate.toString()
-                        binding.taskDetailResponsiblePerson.text = it.taskResponsiblePersonId.toString()
+                        if(it.completionDate == null){
+                            binding.taskDetailCompletionDate.visibility = View.GONE
+                        } else {
+                            binding.taskDetailCompletionDate.text = it.completionDate.toString()
+                        }
+                        binding.taskDetailResponsiblePerson.text = it.taskResponsiblePersonEmail ?: "Not assigned"
                     }
                 }
 
                 is Resource.Error -> {
                     Log.d(LOG_TAG, "Error: ${response.message}")
-                    //hideProgressBar()
+                    (activity as? ProjectsActivity)?.hideLoadingIndicator()
                     response.message?.let { message ->
-                        Toast.makeText(activity, "An error occurred: $message", Toast.LENGTH_SHORT).show()
+                        Snackbar.make(binding.root, "An error occurred: $message", Snackbar.LENGTH_SHORT).show()
                     }
                 }
 
                 is Resource.Loading -> {
-                    //showProgressBar()
+                    (activity as? ProjectsActivity)?.showLoadingIndicator()
                 }
             }
         }
 
     }
 
-    private fun setUpRecyclerView(){
+    private fun setUpRecyclerView() {
         commentsAdapter = CommentsAdapter()
         binding.taskDetailRvComments.apply {
             adapter = commentsAdapter
